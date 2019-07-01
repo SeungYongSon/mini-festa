@@ -5,7 +5,7 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
-interface EventRepository {
+public interface EventRepository {
 
     Flowable<List<Event>> getEventList(int page, int pageSize);
 
