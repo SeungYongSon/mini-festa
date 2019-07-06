@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 public class TicketEntity {
 
     @SerializedName("price")
-    public int price;
+    private int price;
+
+    public int getPrice() {
+        return price;
+    }
 
 }

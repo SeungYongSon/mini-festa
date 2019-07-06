@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 public class LocationEntity {
 
     @SerializedName("name")
-    public String name;
+    private String name;
 
+    public String getName() {
+        return name;
+    }
 }

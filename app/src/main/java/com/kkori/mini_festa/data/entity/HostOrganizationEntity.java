@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 public class HostOrganizationEntity {
 
     @SerializedName("name")
-    public String name;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
 
 }

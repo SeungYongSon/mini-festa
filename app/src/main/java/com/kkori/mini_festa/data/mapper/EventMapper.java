@@ -11,14 +11,14 @@ public class EventMapper implements Mapper<EventEntity, Event> {
     @Override
     public Event mapFrom(EventEntity from) {
         return new Event(
-                from.eventId,
-                from.name,
-                from.eventSignature,
-                from.startDate,
-                ticketsMapper.mapFrom(from.tickets),
-                from.location.name,
-                from.metaData.coverImage,
-                from.hostOrganization.name);
+                from.getEventId(),
+                from.getName(),
+                from.getEventSignature(),
+                from.getStartDate(),
+                ticketsMapper.mapFrom(from.getTickets()),
+                from.getLocation().getName(),
+                from.getMetaData().getCoverImage(),
+                from.getHostOrganization().getName());
     }
 
 }

@@ -11,6 +11,10 @@ public class EventRemoteDataSourceImp implements EventRemoteDataSource {
 
     private API api;
 
+    public EventRemoteDataSourceImp(API api){
+        this.api = api;
+    }
+
     @Override
     public Flowable<EventListDTO> getEventList(int page, int pageSize) {
         return api.getEventList(page, pageSize, "startDate")

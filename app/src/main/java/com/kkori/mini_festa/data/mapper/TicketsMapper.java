@@ -14,7 +14,7 @@ public class TicketsMapper implements Mapper<List<TicketEntity>, List<Ticket>> {
         ArrayList<Ticket> list = new ArrayList<>();
 
         for (TicketEntity ticket : from) {
-            list.add(new Ticket(ticket.price));
+            list.add(new Ticket(ticket.getPrice()));
         }
 
         return list;

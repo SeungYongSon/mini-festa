@@ -1,6 +1,7 @@
 package com.kkori.mini_festa.data.repository;
 
 import com.kkori.mini_festa.data.datasource.EventRemoteDataSource;
+import com.kkori.mini_festa.data.datasource.EventRemoteDataSourceImp;
 import com.kkori.mini_festa.data.dto.EventListDTO;
 import com.kkori.mini_festa.data.entity.EventEntity;
 import com.kkori.mini_festa.data.mapper.EventMapper;
@@ -18,6 +19,11 @@ public class EventRepositoryImp implements EventRepository {
 
     private EventRemoteDataSource eventRemoteDataSource;
     private EventMapper eventMapper;
+
+    public EventRepositoryImp(EventRemoteDataSource eventRemoteDataSource, EventMapper eventMapper) {
+        this.eventRemoteDataSource = eventRemoteDataSource;
+        this.eventMapper = eventMapper;
+    }
 
     @Override
     public Flowable<List<Event>> getEventList(int page, int pageSize) {

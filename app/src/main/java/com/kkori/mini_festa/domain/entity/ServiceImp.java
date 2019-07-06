@@ -9,7 +9,7 @@ public class ServiceImp implements Service {
 
     private EventRepository eventRepository;
 
-    ServiceImp(EventRepository eventRepository) {
+    public ServiceImp(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 

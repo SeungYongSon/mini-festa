@@ -7,20 +7,52 @@ import java.util.List;
 public class EventEntity {
 
     @SerializedName("eventId")
-    public int eventId;
+    private int eventId;
     @SerializedName("name")
-    public String name;
+    private String name;
     @SerializedName("eventSignature")
-    public String eventSignature;
+    private String eventSignature;
     @SerializedName("startDate")
-    public String startDate;
+    private String startDate;
     @SerializedName("tickets")
-    public List<TicketEntity> tickets;
+    private List<TicketEntity> tickets;
     @SerializedName("location")
-    public LocationEntity location;
+    private LocationEntity location;
     @SerializedName("coverImage")
-    public MetaDataEntity metaData;
+    private MetaDataEntity metaData;
     @SerializedName("hostOrganization")
-    public HostOrganizationEntity hostOrganization;
+    private HostOrganizationEntity hostOrganization;
+
+    public int getEventId() {
+        return eventId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEventSignature() {
+        return eventSignature;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public List<TicketEntity> getTickets() {
+        return tickets;
+    }
+
+    public LocationEntity getLocation() {
+        return location;
+    }
+
+    public MetaDataEntity getMetaData() {
+        return metaData;
+    }
+
+    public HostOrganizationEntity getHostOrganization() {
+        return hostOrganization;
+    }
 
 }

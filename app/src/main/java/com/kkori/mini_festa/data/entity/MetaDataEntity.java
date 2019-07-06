@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 public class MetaDataEntity {
 
     @SerializedName("coverImage")
-    public String coverImage;
+    private String coverImage;
+
+    public String getCoverImage() {
+        return coverImage;
+    }
 
 }

@@ -31,4 +31,36 @@ public class Event {
         this.hostName = hostName;
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public int getEventId() {
+        return eventId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEventSignature() {
+        return eventSignature;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public String getHostName() {
+        return hostName;
+    }
+
 }
