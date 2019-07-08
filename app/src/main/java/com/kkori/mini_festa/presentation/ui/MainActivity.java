@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation;
+package com.kkori.mini_festa.presentation.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 

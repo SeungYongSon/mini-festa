@@ -1,32 +1,28 @@
 package com.kkori.mini_festa.domain.base;
 
-import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
+import com.kkori.mini_festa.domain.entity.Service;
 
-public abstract class UseCase<T, E> {
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
+public abstract class UseCase<P, D> {
 
     private CompositeDisposable disposable;
+    protected Service service;
 
-    UseCase(CompositeDisposable disposable) {
+    public UseCase(CompositeDisposable disposable, Service service) {
         this.disposable = disposable;
+        this.service = service;
     }
 
-    public void execute(E data, DisposableSubscriber<T> disposableObserver) {
-        Flowable observable = createFlowable(data)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-
-        DisposableSubscriber observer = (DisposableSubscriber) observable.subscribeWith(disposableObserver);
-
-        disposable.add(observer);
+    public void execute(P data, D disposableObserver) {
+        disposable.add((Disposable) createSubscriber(data, disposableObserver));
     }
 
     public void dispose() {
         disposable.dispose();
     }
 
-    abstract Flowable<T> createFlowable(E data);
+    protected abstract D createSubscriber(P data, D disposableObserver);
+
 }

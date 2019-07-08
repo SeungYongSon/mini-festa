@@ -1,8 +1,10 @@
-package com.kkori.mini_festa.domain.entity;
+package com.kkori.mini_festa.data.database.entity;
+
+import com.kkori.mini_festa.domain.entity.Ticket;
 
 import java.util.List;
 
-public class Event {
+public class EventRoomEntity {
 
     private int eventId;
     private String name;
@@ -13,7 +15,7 @@ public class Event {
     private String coverImage;
     private String hostName;
 
-    public Event(int eventId,
+    public EventRoomEntity(int eventId,
                  String name,
                  String eventSignature,
                  String startDate,
@@ -29,38 +31,6 @@ public class Event {
         this.locationName = locationName;
         this.coverImage = coverImage;
         this.hostName = hostName;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public int getEventId() {
-        return eventId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEventSignature() {
-        return eventSignature;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public String getLocationName() {
-        return locationName;
-    }
-
-    public String getCoverImage() {
-        return coverImage;
-    }
-
-    public String getHostName() {
-        return hostName;
     }
 
 }
