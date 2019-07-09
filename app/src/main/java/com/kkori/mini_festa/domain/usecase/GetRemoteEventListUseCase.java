@@ -7,15 +7,15 @@ import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class GetEventListUseCase extends UseCase<Integer, DisposableSubscriber> {
+public class GetRemoteEventListUseCase extends UseCase<Integer, DisposableSubscriber> {
 
-    public GetEventListUseCase(CompositeDisposable disposable, Service service) {
+    public GetRemoteEventListUseCase(CompositeDisposable disposable, Service service) {
         super(disposable, service);
     }
 
     @Override
     protected DisposableSubscriber createSubscriber(Integer data, DisposableSubscriber disposableObserver) {
-        Flowable flowable = service.getEventList(data, 24);
+        Flowable flowable = service.getRemoteEventList(data, 24);
 
         return (DisposableSubscriber) flowable.subscribeWith(disposableObserver);
     }

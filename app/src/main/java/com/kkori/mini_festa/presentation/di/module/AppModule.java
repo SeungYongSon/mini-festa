@@ -11,7 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
 
-@Module(includes = {NetworkModule.class})
+@Module(includes = {NetworkModule.class, LocalModule.class})
 public class AppModule {
 
     @Provides

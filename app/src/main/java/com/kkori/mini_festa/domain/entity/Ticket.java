@@ -8,7 +8,8 @@ public class Ticket {
         this.price = price;
     }
 
-    public int getPrice() {
+    int getPrice() {
         return price;
     }
+
 }

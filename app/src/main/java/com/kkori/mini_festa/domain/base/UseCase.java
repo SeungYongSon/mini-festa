@@ -23,6 +23,10 @@ public abstract class UseCase<P, D> {
         disposable.dispose();
     }
 
+    public void clear() {
+        disposable.clear();
+    }
+
     protected abstract D createSubscriber(P data, D disposableObserver);
 
 }

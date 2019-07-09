@@ -7,7 +7,6 @@ public abstract class BasePresenter<T extends BaseContract.View> implements Base
     @Override
     public void createView(T view) {
         this.view = view;
-        view.setPresenter(this);
     }
 
     @Override
@@ -15,7 +14,7 @@ public abstract class BasePresenter<T extends BaseContract.View> implements Base
         this.view = null;
     }
 
-    public BaseContract.View getView() {
+    public T getView() {
         return view;
     }
 

@@ -1,6 +1,6 @@
 package com.kkori.mini_festa.data.datasource;
 
-import com.kkori.mini_festa.data.remote.API;
+import com.kkori.mini_festa.data.API;
 import com.kkori.mini_festa.data.dto.EventListDTO;
 
 import io.reactivex.Flowable;
@@ -11,7 +11,7 @@ public class EventRemoteDataSourceImp implements EventRemoteDataSource {
 
     private API api;
 
-    public EventRemoteDataSourceImp(API api){
+    public EventRemoteDataSourceImp(API api) {
         this.api = api;
     }
 

@@ -2,7 +2,7 @@ package com.kkori.mini_festa.presentation.di.module;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.kkori.mini_festa.data.remote.API;
+import com.kkori.mini_festa.data.API;
 
 import javax.inject.Singleton;
 
@@ -19,7 +19,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public HttpLoggingInterceptor provideHttpLoggingInterceptor() {
+    HttpLoggingInterceptor provideHttpLoggingInterceptor() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
 
@@ -28,7 +28,7 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public OkHttpClient provideOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor) {
+    OkHttpClient provideOkHttpClient(HttpLoggingInterceptor httpLoggingInterceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
                 .build();
@@ -36,13 +36,13 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public Gson provideGson() {
+    Gson provideGson() {
         return new GsonBuilder().create();
     }
 
     @Provides
     @Singleton
-    public API provideAPI(Gson gson, OkHttpClient okHttpClient) {
+    API provideAPI(Gson gson, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

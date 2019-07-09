@@ -1,16 +1,13 @@
 package com.kkori.mini_festa.presentation.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
 import com.kkori.mini_festa.R;
+import com.kkori.mini_festa.presentation.ui.base.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int initLayoutResource() {
+        return R.layout.activity_main;
     }
+
 }

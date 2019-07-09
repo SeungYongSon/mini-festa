@@ -18,7 +18,7 @@ public class EventEntity {
     private List<TicketEntity> tickets;
     @SerializedName("location")
     private LocationEntity location;
-    @SerializedName("coverImage")
+    @SerializedName("metadata")
     private MetaDataEntity metaData;
     @SerializedName("hostOrganization")
     private HostOrganizationEntity hostOrganization;

@@ -29,4 +29,36 @@ public class EventModel {
         this.hostName = hostName;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getEventSignature() {
+        return eventSignature;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getTicketPriceRange() {
+        return ticketPriceRange;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public String getHostName() {
+        return hostName;
+    }
+
+    public int getEventId() {
+        return eventId;
+    }
+
 }

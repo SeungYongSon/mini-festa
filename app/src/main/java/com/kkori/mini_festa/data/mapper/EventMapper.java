@@ -1,5 +1,6 @@
 package com.kkori.mini_festa.data.mapper;
 
+import com.kkori.mini_festa.data.database.entity.EventRoomEntity;
 import com.kkori.mini_festa.data.entity.EventEntity;
 import com.kkori.mini_festa.domain.base.Mapper;
 import com.kkori.mini_festa.domain.entity.Event;
@@ -19,6 +20,18 @@ public class EventMapper implements Mapper<EventEntity, Event> {
                 from.getLocation().getName(),
                 from.getMetaData().getCoverImage(),
                 from.getHostOrganization().getName());
+    }
+
+    public Event mapFrom(EventRoomEntity from) {
+        return new Event(
+                from.getEventId(),
+                from.getName(),
+                from.getEventSignature(),
+                from.getStartDate(),
+                from.getTicketPriceRange(),
+                from.getLocationName(),
+                from.getHostName(),
+                from.getCoverImage());
     }
 
 }
