@@ -12,6 +12,7 @@ public class Event {
     private String locationName;
     private String coverImage;
     private String hostName;
+    private String ticketPriceRange;
 
     public Event(int eventId,
                  String name,
@@ -31,8 +32,34 @@ public class Event {
         this.hostName = hostName;
     }
 
-    public List<Ticket> getTickets() {
-        return tickets;
+    public Event(int eventId,
+                 String name,
+                 String eventSignature,
+                 String startDate,
+                 String ticketPriceRange,
+                 String locationName,
+                 String coverImage,
+                 String hostName) {
+        this.eventId = eventId;
+        this.name = name;
+        this.eventSignature = eventSignature;
+        this.startDate = startDate;
+        this.locationName = locationName;
+        this.coverImage = coverImage;
+        this.hostName = hostName;
+        this.ticketPriceRange = ticketPriceRange;
+    }
+
+    public String getTicketPriceRange() {
+        return ticketPriceRange;
+    }
+
+    void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    void setTicketPriceRange(String ticketPriceRange) {
+        this.ticketPriceRange = ticketPriceRange;
     }
 
     public int getEventId() {
@@ -61,6 +88,10 @@ public class Event {
 
     public String getHostName() {
         return hostName;
+    }
+
+    List<Ticket> getTickets() {
+        return tickets;
     }
 
 }
