@@ -18,7 +18,7 @@ public interface EventContract {
     }
 
     interface Presenter extends BaseContract.Presenter<View> {
-        void getEvents();
+        void initEvent();
     }
 
 }

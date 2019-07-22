@@ -29,7 +29,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
     }
 
     @Override
-    public void getEvents() {
+    public void initEvent() {
         if (getView().checkNetWork()) {
             loadRemoteEvents();
         } else {

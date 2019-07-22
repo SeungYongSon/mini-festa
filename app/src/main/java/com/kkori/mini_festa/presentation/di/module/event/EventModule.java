@@ -1,5 +1,6 @@
 package com.kkori.mini_festa.presentation.di.module.event;
 
+import com.kkori.mini_festa.data.API;
 import com.kkori.mini_festa.data.database.dao.EventDao;
 import com.kkori.mini_festa.data.datasource.EventLocalDataSource;
 import com.kkori.mini_festa.data.datasource.EventLocalDataSourceImp;
@@ -7,23 +8,21 @@ import com.kkori.mini_festa.data.datasource.EventRemoteDataSource;
 import com.kkori.mini_festa.data.datasource.EventRemoteDataSourceImp;
 import com.kkori.mini_festa.data.mapper.EventMapper;
 import com.kkori.mini_festa.data.mapper.EventRoomMapper;
-import com.kkori.mini_festa.data.API;
 import com.kkori.mini_festa.data.repository.EventRepositoryImp;
-import com.kkori.mini_festa.domain.entity.EventRepository;
-import com.kkori.mini_festa.domain.entity.Service;
-import com.kkori.mini_festa.domain.entity.ServiceImp;
-import com.kkori.mini_festa.domain.usecase.GetRemoteEventListUseCase;
+import com.kkori.mini_festa.domain.entity.event.EventRepository;
+import com.kkori.mini_festa.domain.entity.event.EventService;
+import com.kkori.mini_festa.domain.entity.event.EventServiceImp;
 import com.kkori.mini_festa.domain.usecase.GetLocalEventListUseCase;
+import com.kkori.mini_festa.domain.usecase.GetRemoteEventListUseCase;
 import com.kkori.mini_festa.presentation.di.scope.EventFragmentScope;
 import com.kkori.mini_festa.presentation.event.EventContract;
+import com.kkori.mini_festa.presentation.event.EventFragment;
+import com.kkori.mini_festa.presentation.event.EventListAdapter;
 import com.kkori.mini_festa.presentation.event.EventPresenter;
 import com.kkori.mini_festa.presentation.mapper.EventModelMapper;
-import com.kkori.mini_festa.presentation.ui.event.EventFragment;
-import com.kkori.mini_festa.presentation.ui.event.EventListAdapter;
 
 import dagger.Module;
 import dagger.Provides;
-import io.reactivex.disposables.CompositeDisposable;
 
 @Module
 public class EventModule {
@@ -51,20 +50,20 @@ public class EventModule {
 
     @Provides
     @EventFragmentScope
-    Service provideService(EventRepository eventRepository) {
-        return new ServiceImp(eventRepository);
+    EventService provideEventService(EventRepository eventRepository) {
+        return new EventServiceImp(eventRepository);
     }
 
     @Provides
     @EventFragmentScope
-    GetRemoteEventListUseCase provideGetEventListUseCase(CompositeDisposable disposable, Service service) {
-        return new GetRemoteEventListUseCase(disposable, service);
+    GetRemoteEventListUseCase provideGetEventListUseCase(EventService eventService) {
+        return new GetRemoteEventListUseCase(eventService);
     }
 
     @Provides
     @EventFragmentScope
-    GetLocalEventListUseCase provideGetLocalEventListUseCase(CompositeDisposable disposable, Service service) {
-        return new GetLocalEventListUseCase(disposable, service);
+    GetLocalEventListUseCase provideGetLocalEventListUseCase(EventService eventService) {
+        return new GetLocalEventListUseCase(eventService);
     }
 
     @Provides

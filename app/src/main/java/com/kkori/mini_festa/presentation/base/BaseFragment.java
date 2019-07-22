@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.ui.base;
+package com.kkori.mini_festa.presentation.base;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.kkori.mini_festa.presentation.base.BaseContract;
 
 import dagger.android.support.DaggerFragment;
 

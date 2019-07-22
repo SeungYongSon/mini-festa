@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.MainActivity">
+    tools:context=".presentation.MainActivity">
 
     <fragment
         android:id="@+id/main_fragment"
-        android:name="com.kkori.mini_festa.presentation.ui.event.EventFragment"
+        android:name="com.kkori.mini_festa.presentation.event.EventFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

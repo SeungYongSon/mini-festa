@@ -8,11 +8,12 @@ import com.kkori.mini_festa.data.entity.EventEntity;
 import com.kkori.mini_festa.data.mapper.EventMapper;
 import com.kkori.mini_festa.data.mapper.EventRoomMapper;
 import com.kkori.mini_festa.domain.entity.Event;
-import com.kkori.mini_festa.domain.entity.EventRepository;
+import com.kkori.mini_festa.domain.entity.event.EventRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
 
@@ -68,8 +69,8 @@ public class EventRepositoryImp implements EventRepository {
     }
 
     @Override
-    public void saveLocalEvent(List<Event> events) {
-        eventLocalDataSource.saveLocalEvent(eventRoomMapper.mapFrom(events));
+    public Completable saveLocalEvent(List<Event> events) {
+        return eventLocalDataSource.saveLocalEvent(eventRoomMapper.mapFrom(events));
     }
 
 }

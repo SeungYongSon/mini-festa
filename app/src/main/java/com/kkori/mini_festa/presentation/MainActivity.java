@@ -1,7 +1,7 @@
-package com.kkori.mini_festa.presentation.ui;
+package com.kkori.mini_festa.presentation;
 
 import com.kkori.mini_festa.R;
-import com.kkori.mini_festa.presentation.ui.base.BaseActivity;
+import com.kkori.mini_festa.presentation.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 

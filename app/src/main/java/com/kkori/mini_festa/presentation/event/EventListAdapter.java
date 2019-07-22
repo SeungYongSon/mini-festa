@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.ui.event;
+package com.kkori.mini_festa.presentation.event;
 
 import android.view.LayoutInflater;
 import android.view.View;

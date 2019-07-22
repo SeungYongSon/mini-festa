@@ -1,4 +1,9 @@
-package com.kkori.mini_festa.domain.entity;
+package com.kkori.mini_festa.domain.entity.event;
+
+import android.util.Log;
+
+import com.kkori.mini_festa.domain.entity.Event;
+import com.kkori.mini_festa.domain.entity.Ticket;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -10,30 +15,44 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableCompletableObserver;
 
-public class ServiceImp implements Service {
+public class EventServiceImp implements EventService {
+
+    private static final String PRICE_FORMAT = "￦ %s ~ ￦ %s";
+    private static final String UK_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    private static final String KR_DATE_FORMAT = "yyyy년 MM월 dd일 a hh:mm";
 
     private EventRepository eventRepository;
 
-    public ServiceImp(EventRepository eventRepository) {
+    public EventServiceImp(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 
     @Override
     public Flowable<List<Event>> getRemoteEventList(int page, int pageSize) {
         return eventRepository.getRemoteEventList(page, pageSize)
-                .map(new Function<List<Event>, List<Event>>() {
+                .doOnNext(new Consumer<List<Event>>() {
                     @Override
-                    public List<Event> apply(List<Event> eventList) {
+                    public void accept(List<Event> eventList) {
                         for (Event event : eventList) {
                             event.setTicketPriceRange(createPriceRange(event.getTickets()));
                             event.setStartDate(createKoreaData(event.getStartDate()));
                         }
 
-                        eventRepository.saveLocalEvent(eventList);
+                        eventRepository.saveLocalEvent(eventList)
+                                .subscribe(new DisposableCompletableObserver() {
+                                    @Override
+                                    public void onComplete() {
+                                        Log.e("Save Event", "Complete!");
+                                    }
 
-                        return eventList;
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e("Save Event", e.getMessage());
+                                    }
+                                });
                     }
                 });
     }
@@ -44,8 +63,8 @@ public class ServiceImp implements Service {
     }
 
     private String createKoreaData(String ukTime) {
-        SimpleDateFormat transUK = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.UK);
-        SimpleDateFormat transKR = new SimpleDateFormat("yyyy년 MM월 dd일 a hh:mm", Locale.KOREA);
+        SimpleDateFormat transUK = new SimpleDateFormat(UK_DATE_FORMAT, Locale.UK);
+        SimpleDateFormat transKR = new SimpleDateFormat(KR_DATE_FORMAT, Locale.KOREA);
 
         Calendar cal = Calendar.getInstance();
 
@@ -75,7 +94,7 @@ public class ServiceImp implements Service {
 
             if (maxPrice == 0 && minPrice == 0) return "무료";
             else if (maxPrice == minPrice) return '￦' + formatter.format(maxPrice);
-            return '￦' + formatter.format(minPrice) + " ~ " + '￦' + formatter.format(maxPrice);
+            return String.format(PRICE_FORMAT, formatter.format(minPrice), formatter.format(maxPrice));
         }
     }
 
