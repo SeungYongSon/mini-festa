@@ -1,7 +1,5 @@
 package com.kkori.mini_festa.presentation.event;
 
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
@@ -10,13 +8,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkori.mini_festa.R;
-import com.kkori.mini_festa.presentation.model.EventModel;
 import com.kkori.mini_festa.presentation.base.BaseFragment;
+import com.kkori.mini_festa.presentation.model.EventModel;
 
 import java.util.List;
 
@@ -55,19 +52,6 @@ public class EventFragment extends BaseFragment implements EventContract.View {
         recyclerView.setAdapter(eventListAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(false);
-/*        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            private int space = 36 ;
-
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                outRect.left = space;
-                outRect.right = space;
-
-                //for vertical scrolling
-                outRect.bottom = space;
-                outRect.top = space;
-            }
-        });*/
     }
 
     @Override
