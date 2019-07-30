@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
-    tools:context=".presentation.event.EventFragment">
+    tools:context=".presentation.event.board.EventBoardFragment">
 
     <ProgressBar
         android:id="@+id/loading_progress"
@@ -33,8 +33,8 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginTop="8dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/eventboard_title"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -47,8 +47,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:text="@string/event_board_explanation"
                 android:textSize="11sp"
-                android:text="이벤트 보드에서 페스타의 이벤트를 한눈에 볼 수 있습니다."
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -57,20 +57,22 @@
                 android:id="@+id/event_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
                 android:layout_marginTop="8dp"
+                android:clipToPadding="false"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="8dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:spanCount="2"
+                tools:listitem="@layout/item_event_board" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

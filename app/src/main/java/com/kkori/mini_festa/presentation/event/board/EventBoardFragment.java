@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.event;
+package com.kkori.mini_festa.presentation.event.board;
 
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -8,28 +8,31 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkori.mini_festa.R;
 import com.kkori.mini_festa.presentation.base.BaseFragment;
+import com.kkori.mini_festa.presentation.event.EventListAdapter;
 import com.kkori.mini_festa.presentation.model.EventModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
-public class EventFragment extends BaseFragment implements EventContract.View {
+public class EventBoardFragment extends BaseFragment implements EventBoardContract.View {
 
     @Inject
-    EventContract.Presenter presenter;
+    EventBoardContract.Presenter presenter;
 
     @Inject
     EventListAdapter eventListAdapter;
 
-    private ProgressBar loadingProgress;
+    @BindView(R.id.loading_progress)
+    ProgressBar loadingProgress;
 
     @Override
     public int initLayoutResource() {
@@ -40,8 +43,6 @@ public class EventFragment extends BaseFragment implements EventContract.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loadingProgress = view.findViewById(R.id.loading_progress);
-
         RecyclerView eventRecycler = view.findViewById(R.id.event_recycler);
         initEventRecyclerView(eventRecycler);
 
@@ -50,7 +51,6 @@ public class EventFragment extends BaseFragment implements EventContract.View {
 
     private void initEventRecyclerView(RecyclerView recyclerView) {
         recyclerView.setAdapter(eventListAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(false);
     }
 

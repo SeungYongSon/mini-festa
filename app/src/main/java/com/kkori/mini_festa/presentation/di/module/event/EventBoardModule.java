@@ -15,17 +15,17 @@ import com.kkori.mini_festa.domain.entity.event.EventServiceImp;
 import com.kkori.mini_festa.domain.usecase.GetLocalEventListUseCase;
 import com.kkori.mini_festa.domain.usecase.GetRemoteEventListUseCase;
 import com.kkori.mini_festa.presentation.di.scope.EventFragmentScope;
-import com.kkori.mini_festa.presentation.event.EventContract;
-import com.kkori.mini_festa.presentation.event.EventFragment;
+import com.kkori.mini_festa.presentation.event.board.EventBoardContract;
+import com.kkori.mini_festa.presentation.event.board.EventBoardFragment;
 import com.kkori.mini_festa.presentation.event.EventListAdapter;
-import com.kkori.mini_festa.presentation.event.EventPresenter;
+import com.kkori.mini_festa.presentation.event.board.EventBoardPresenter;
 import com.kkori.mini_festa.presentation.mapper.EventModelMapper;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class EventModule {
+public class EventBoardModule {
 
     @Provides
     @EventFragmentScope
@@ -86,12 +86,12 @@ public class EventModule {
 
     @Provides
     @EventFragmentScope
-    EventContract.Presenter provideMainPresenter(EventFragment eventFragment,
-                                                 GetRemoteEventListUseCase getRemoteEventListUseCase,
-                                                 GetLocalEventListUseCase getLocalEventListUseCase,
-                                                 EventModelMapper eventModelMapper) {
+    EventBoardContract.Presenter provideEventBoardPresenter(EventBoardFragment eventFragment,
+                                                      GetRemoteEventListUseCase getRemoteEventListUseCase,
+                                                      GetLocalEventListUseCase getLocalEventListUseCase,
+                                                      EventModelMapper eventModelMapper) {
 
-        EventPresenter eventPresenter = new EventPresenter(getRemoteEventListUseCase, getLocalEventListUseCase, eventModelMapper);
+        EventBoardPresenter eventPresenter = new EventBoardPresenter(getRemoteEventListUseCase, getLocalEventListUseCase, eventModelMapper);
 
         eventPresenter.createView(eventFragment);
         eventFragment.setPresenter(eventPresenter);

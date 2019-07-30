@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.event;
+package com.kkori.mini_festa.presentation.event.board;
 
 import android.util.Log;
 
@@ -14,15 +14,15 @@ import java.util.List;
 
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class EventPresenter extends BasePresenter<EventContract.View> implements EventContract.Presenter {
+public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> implements EventBoardContract.Presenter {
 
     private GetRemoteEventListUseCase getRemoteEventListUseCase;
     private GetLocalEventListUseCase getLocalEventListUseCase;
     private EventModelMapper eventModelMapper;
 
-    public EventPresenter(GetRemoteEventListUseCase getRemoteEventListUseCase,
-                          GetLocalEventListUseCase getLocalEventListUseCase,
-                          EventModelMapper eventModelMapper) {
+    public EventBoardPresenter(GetRemoteEventListUseCase getRemoteEventListUseCase,
+                               GetLocalEventListUseCase getLocalEventListUseCase,
+                               EventModelMapper eventModelMapper) {
         this.getRemoteEventListUseCase = getRemoteEventListUseCase;
         this.getLocalEventListUseCase = getLocalEventListUseCase;
         this.eventModelMapper = eventModelMapper;
@@ -93,7 +93,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
 
 
     @Override
-    public void createView(EventContract.View view) {
+    public void createView(EventBoardContract.View view) {
         super.createView(view);
     }
 

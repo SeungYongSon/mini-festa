@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import butterknife.ButterKnife;
 import dagger.android.support.DaggerFragment;
 
 public abstract class BaseFragment extends DaggerFragment implements BaseContract.View {
@@ -19,7 +20,11 @@ public abstract class BaseFragment extends DaggerFragment implements BaseContrac
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(initLayoutResource(), container, false);
+        View view = inflater.inflate(initLayoutResource(), container, false);
+
+        ButterKnife.bind(this, view);
+
+        return view;
     }
 
     @Override

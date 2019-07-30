@@ -4,7 +4,6 @@ import com.kkori.mini_festa.domain.base.UseCase;
 import com.kkori.mini_festa.domain.entity.event.EventService;
 
 import io.reactivex.Flowable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 public class GetRemoteEventListUseCase extends UseCase<Integer, DisposableSubscriber> {

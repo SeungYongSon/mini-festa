@@ -11,8 +11,9 @@ public abstract class UseCase<P, D> {
     }
 
     public void clear() {
-        if (disposable != null)
+        if (disposable != null) {
             disposable.dispose();
+        }
     }
 
     protected abstract D createSubscriber(P data, D disposableObserver);

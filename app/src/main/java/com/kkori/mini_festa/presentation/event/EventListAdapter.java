@@ -16,6 +16,9 @@ import com.kkori.mini_festa.presentation.model.EventModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventListViewHolder> {
 
     private ArrayList<EventModel> eventModels = new ArrayList<>();
@@ -23,7 +26,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     @NonNull
     @Override
     public EventListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event_board, parent, false);
 
         return new EventListViewHolder(view);
     }
@@ -38,27 +41,28 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         return eventModels.size();
     }
 
-    void add(List<EventModel> eventModels) {
+    public void add(List<EventModel> eventModels) {
         this.eventModels.addAll(eventModels);
         notifyDataSetChanged();
     }
 
     class EventListViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imageEvent;
-        private TextView tvName;
-        private TextView tvDate;
-        private TextView tvHost;
-        private TextView tvPrice;
+        @BindView(R.id.item_event_image)
+        ImageView imageEvent;
+        @BindView(R.id.item_event_name)
+        TextView tvName;
+        @BindView(R.id.item_event_date)
+        TextView tvDate;
+        @BindView(R.id.item_event_host)
+        TextView tvHost;
+        @BindView(R.id.item_event_price)
+        TextView tvPrice;
 
         private EventListViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            imageEvent = itemView.findViewById(R.id.item_event_image);
-            tvName = itemView.findViewById(R.id.item_event_name);
-            tvDate = itemView.findViewById(R.id.item_event_date);
-            tvHost = itemView.findViewById(R.id.item_event_host);
-            tvPrice = itemView.findViewById(R.id.item_event_price);
+            ButterKnife.bind(this, itemView);
         }
 
         void bind(EventModel eventModel) {
