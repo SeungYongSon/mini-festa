@@ -54,11 +54,11 @@ public class Event {
         return ticketPriceRange;
     }
 
-    void setStartDate(String startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    void setTicketPriceRange(String ticketPriceRange) {
+    public void setTicketPriceRange(String ticketPriceRange) {
         this.ticketPriceRange = ticketPriceRange;
     }
 
@@ -90,7 +90,7 @@ public class Event {
         return hostName;
     }
 
-    List<Ticket> getTickets() {
+    public List<Ticket> getTickets() {
         return tickets;
     }
 

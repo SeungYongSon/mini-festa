@@ -1,13 +1,13 @@
-package com.kkori.mini_festa.presentation.di.module;
+package com.kkori.mini_festa.presentation.di.injection;
 
 import com.kkori.mini_festa.presentation.di.scope.MainActivityScope;
-import com.kkori.mini_festa.presentation.ui.MainActivity;
+import com.kkori.mini_festa.presentation.MainActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
-public abstract class ActivityModule {
+public abstract class InjectionActivityModule {
 
     @MainActivityScope
     @ContributesAndroidInjector

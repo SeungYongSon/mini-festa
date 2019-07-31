@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.ui.event;
+package com.kkori.mini_festa.presentation.event.board;
 
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -8,29 +8,35 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkori.mini_festa.R;
-import com.kkori.mini_festa.presentation.event.EventContract;
+import com.kkori.mini_festa.presentation.base.BaseFragment;
+import com.kkori.mini_festa.presentation.event.EventListAdapter;
 import com.kkori.mini_festa.presentation.model.EventModel;
-import com.kkori.mini_festa.presentation.ui.base.BaseFragment;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
-public class EventFragment extends BaseFragment implements EventContract.View {
+public class EventBoardFragment extends BaseFragment implements EventBoardContract.View, NestedScrollView.OnScrollChangeListener {
 
     @Inject
-    EventContract.Presenter presenter;
+    EventBoardContract.Presenter presenter;
 
     @Inject
     EventListAdapter eventListAdapter;
 
-    private ProgressBar loadingProgress;
+    @BindView(R.id.first_loading_progress)
+    ProgressBar firstLoadingProgress;
+
+    @BindView(R.id.more_loading_progress)
+    ProgressBar moreLoadingProgress;
 
     @Override
     public int initLayoutResource() {
@@ -41,17 +47,17 @@ public class EventFragment extends BaseFragment implements EventContract.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loadingProgress = view.findViewById(R.id.loading_progress);
+        NestedScrollView nestedScrollView = view.findViewById(R.id.nested_scroll);
+        nestedScrollView.setOnScrollChangeListener(this);
 
         RecyclerView eventRecycler = view.findViewById(R.id.event_recycler);
         initEventRecyclerView(eventRecycler);
 
-        presenter.getEvents();
+        presenter.loadEvent();
     }
 
     private void initEventRecyclerView(RecyclerView recyclerView) {
         recyclerView.setAdapter(eventListAdapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(false);
     }
 
@@ -67,8 +73,14 @@ public class EventFragment extends BaseFragment implements EventContract.View {
     }
 
     @Override
-    public void hideProgress() {
-        loadingProgress.setVisibility(View.GONE);
+    public void showMoreLoadingProgress() {
+        moreLoadingProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress(boolean isMoreLoading) {
+        if (isMoreLoading) moreLoadingProgress.setVisibility(View.GONE);
+        else firstLoadingProgress.setVisibility(View.GONE);
     }
 
     @Override
@@ -76,4 +88,13 @@ public class EventFragment extends BaseFragment implements EventContract.View {
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        if (v.getChildAt(v.getChildCount() - 1) != null) {
+            if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                    scrollY > oldScrollY) {
+                presenter.loadEvent();
+            }
+        }
+    }
 }

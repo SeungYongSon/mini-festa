@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.event;
+package com.kkori.mini_festa.presentation.event.board;
 
 import android.util.Log;
 
@@ -14,31 +14,42 @@ import java.util.List;
 
 import io.reactivex.subscribers.DisposableSubscriber;
 
-public class EventPresenter extends BasePresenter<EventContract.View> implements EventContract.Presenter {
+public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> implements EventBoardContract.Presenter {
 
     private GetRemoteEventListUseCase getRemoteEventListUseCase;
     private GetLocalEventListUseCase getLocalEventListUseCase;
     private EventModelMapper eventModelMapper;
 
-    public EventPresenter(GetRemoteEventListUseCase getRemoteEventListUseCase,
-                          GetLocalEventListUseCase getLocalEventListUseCase,
-                          EventModelMapper eventModelMapper) {
+    private int pageIndex = 1;
+    private boolean isLoadingEvent = false;
+
+    public EventBoardPresenter(GetRemoteEventListUseCase getRemoteEventListUseCase,
+                               GetLocalEventListUseCase getLocalEventListUseCase,
+                               EventModelMapper eventModelMapper) {
         this.getRemoteEventListUseCase = getRemoteEventListUseCase;
         this.getLocalEventListUseCase = getLocalEventListUseCase;
         this.eventModelMapper = eventModelMapper;
     }
 
     @Override
-    public void getEvents() {
-        if (getView().checkNetWork()) {
-            loadRemoteEvents();
-        } else {
-            loadLocalEvents();
+    public void loadEvent() {
+        if (!isLoadingEvent) {
+            isLoadingEvent = true;
+
+            if (getView().checkNetWork()) {
+                loadRemoteEvents();
+            } else {
+                loadLocalEvents();
+            }
         }
     }
 
     private void loadRemoteEvents() {
-        getRemoteEventListUseCase.execute(1, new DisposableSubscriber<List<Event>>() {
+        if (pageIndex > 1) {
+            getView().showMoreLoadingProgress();
+        }
+
+        getRemoteEventListUseCase.execute(pageIndex, new DisposableSubscriber<List<Event>>() {
             ArrayList<EventModel> eventModels = new ArrayList<>();
 
             @Override
@@ -50,21 +61,25 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
 
             @Override
             public void onComplete() {
-                getView().addEventsToAdapter(eventModels);
-                getView().hideProgress();
+                hideProgress();
+                if (!eventModels.isEmpty()) {
+                    getView().addEventsToAdapter(eventModels);
+                    pageIndex++;
+                }
             }
 
             @Override
             public void onError(Throwable t) {
                 getView().showToast("행사들을 불러올 수 없습니다!");
-
                 Log.e("Error!!", t.getLocalizedMessage());
+
+                hideProgress();
             }
         });
     }
 
     private void loadLocalEvents() {
-        getLocalEventListUseCase.execute(null, new DisposableSubscriber<List<Event>>() {
+        getLocalEventListUseCase.execute(new DisposableSubscriber<List<Event>>() {
             ArrayList<EventModel> eventModels = new ArrayList<>();
 
             @Override
@@ -78,7 +93,7 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
             @Override
             public void onComplete() {
                 getView().addEventsToAdapter(eventModels);
-                getView().hideProgress();
+                getView().hideProgress(false);
 
                 getView().showToast("네트워크 상태를 확인 해주세요!");
             }
@@ -91,9 +106,16 @@ public class EventPresenter extends BasePresenter<EventContract.View> implements
         });
     }
 
+    private void hideProgress() {
+        if (pageIndex > 1) getView().hideProgress(true);
+        else getView().hideProgress(false);
+
+        isLoadingEvent = false;
+    }
+
 
     @Override
-    public void createView(EventContract.View view) {
+    public void createView(EventBoardContract.View view) {
         super.createView(view);
     }
 
