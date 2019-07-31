@@ -10,6 +10,10 @@ public abstract class UseCase<P, D> {
         disposable = (Disposable) createSubscriber(data, disposableObserver);
     }
 
+    public void execute(D disposableObserver) {
+        disposable = (Disposable) createSubscriber(null, disposableObserver);
+    }
+
     public void clear() {
         if (disposable != null) {
             disposable.dispose();

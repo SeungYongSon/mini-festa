@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkori.mini_festa.R;
@@ -23,7 +24,7 @@ import butterknife.BindView;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
-public class EventBoardFragment extends BaseFragment implements EventBoardContract.View {
+public class EventBoardFragment extends BaseFragment implements EventBoardContract.View, NestedScrollView.OnScrollChangeListener {
 
     @Inject
     EventBoardContract.Presenter presenter;
@@ -31,8 +32,11 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
     @Inject
     EventListAdapter eventListAdapter;
 
-    @BindView(R.id.loading_progress)
-    ProgressBar loadingProgress;
+    @BindView(R.id.first_loading_progress)
+    ProgressBar firstLoadingProgress;
+
+    @BindView(R.id.more_loading_progress)
+    ProgressBar moreLoadingProgress;
 
     @Override
     public int initLayoutResource() {
@@ -43,10 +47,13 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        NestedScrollView nestedScrollView = view.findViewById(R.id.nested_scroll);
+        nestedScrollView.setOnScrollChangeListener(this);
+
         RecyclerView eventRecycler = view.findViewById(R.id.event_recycler);
         initEventRecyclerView(eventRecycler);
 
-        presenter.initEvent();
+        presenter.loadEvent();
     }
 
     private void initEventRecyclerView(RecyclerView recyclerView) {
@@ -66,8 +73,14 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
     }
 
     @Override
-    public void hideProgress() {
-        loadingProgress.setVisibility(View.GONE);
+    public void showMoreLoadingProgress() {
+        moreLoadingProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress(boolean isMoreLoading) {
+        if (isMoreLoading) moreLoadingProgress.setVisibility(View.GONE);
+        else firstLoadingProgress.setVisibility(View.GONE);
     }
 
     @Override
@@ -75,4 +88,13 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        if (v.getChildAt(v.getChildCount() - 1) != null) {
+            if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                    scrollY > oldScrollY) {
+                presenter.loadEvent();
+            }
+        }
+    }
 }

@@ -61,7 +61,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         private EventListViewHolder(@NonNull View itemView) {
             super(itemView);
-
             ButterKnife.bind(this, itemView);
         }
 

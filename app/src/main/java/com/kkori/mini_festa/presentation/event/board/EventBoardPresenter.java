@@ -20,6 +20,9 @@ public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> 
     private GetLocalEventListUseCase getLocalEventListUseCase;
     private EventModelMapper eventModelMapper;
 
+    private int pageIndex = 1;
+    private boolean isLoadingEvent = false;
+
     public EventBoardPresenter(GetRemoteEventListUseCase getRemoteEventListUseCase,
                                GetLocalEventListUseCase getLocalEventListUseCase,
                                EventModelMapper eventModelMapper) {
@@ -29,16 +32,24 @@ public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> 
     }
 
     @Override
-    public void initEvent() {
-        if (getView().checkNetWork()) {
-            loadRemoteEvents();
-        } else {
-            loadLocalEvents();
+    public void loadEvent() {
+        if (!isLoadingEvent) {
+            isLoadingEvent = true;
+
+            if (getView().checkNetWork()) {
+                loadRemoteEvents();
+            } else {
+                loadLocalEvents();
+            }
         }
     }
 
     private void loadRemoteEvents() {
-        getRemoteEventListUseCase.execute(1, new DisposableSubscriber<List<Event>>() {
+        if (pageIndex > 1) {
+            getView().showMoreLoadingProgress();
+        }
+
+        getRemoteEventListUseCase.execute(pageIndex, new DisposableSubscriber<List<Event>>() {
             ArrayList<EventModel> eventModels = new ArrayList<>();
 
             @Override
@@ -50,21 +61,25 @@ public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> 
 
             @Override
             public void onComplete() {
-                getView().addEventsToAdapter(eventModels);
-                getView().hideProgress();
+                hideProgress();
+                if (!eventModels.isEmpty()) {
+                    getView().addEventsToAdapter(eventModels);
+                    pageIndex++;
+                }
             }
 
             @Override
             public void onError(Throwable t) {
                 getView().showToast("행사들을 불러올 수 없습니다!");
-
                 Log.e("Error!!", t.getLocalizedMessage());
+
+                hideProgress();
             }
         });
     }
 
     private void loadLocalEvents() {
-        getLocalEventListUseCase.execute(null, new DisposableSubscriber<List<Event>>() {
+        getLocalEventListUseCase.execute(new DisposableSubscriber<List<Event>>() {
             ArrayList<EventModel> eventModels = new ArrayList<>();
 
             @Override
@@ -78,7 +93,7 @@ public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> 
             @Override
             public void onComplete() {
                 getView().addEventsToAdapter(eventModels);
-                getView().hideProgress();
+                getView().hideProgress(false);
 
                 getView().showToast("네트워크 상태를 확인 해주세요!");
             }
@@ -89,6 +104,13 @@ public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> 
                 Log.e("Error!!", t.getLocalizedMessage());
             }
         });
+    }
+
+    private void hideProgress() {
+        if (pageIndex > 1) getView().hideProgress(true);
+        else getView().hideProgress(false);
+
+        isLoadingEvent = false;
     }
 
 

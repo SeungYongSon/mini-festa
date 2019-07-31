@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableCompletableObserver;
 
 public class EventServiceImp implements EventService {
@@ -33,27 +32,24 @@ public class EventServiceImp implements EventService {
     @Override
     public Flowable<List<Event>> getRemoteEventList(int page, int pageSize) {
         return eventRepository.getRemoteEventList(page, pageSize)
-                .doOnNext(new Consumer<List<Event>>() {
-                    @Override
-                    public void accept(List<Event> eventList) {
-                        for (Event event : eventList) {
-                            event.setTicketPriceRange(createPriceRange(event.getTickets()));
-                            event.setStartDate(createKoreaData(event.getStartDate()));
-                        }
-
-                        eventRepository.saveLocalEvent(eventList)
-                                .subscribe(new DisposableCompletableObserver() {
-                                    @Override
-                                    public void onComplete() {
-                                        Log.e("Save Event", "Complete!");
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e("Save Event", e.getMessage());
-                                    }
-                                });
+                .doOnNext(eventList -> {
+                    for (Event event : eventList) {
+                        event.setTicketPriceRange(createPriceRange(event.getTickets()));
+                        event.setStartDate(createKoreaData(event.getStartDate()));
                     }
+
+                    eventRepository.saveLocalEvent(eventList)
+                            .subscribe(new DisposableCompletableObserver() {
+                                @Override
+                                public void onComplete() {
+                                    Log.e("Save Event", "Complete!");
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.e("Save Event", e.getMessage());
+                                }
+                            });
                 });
     }
 
