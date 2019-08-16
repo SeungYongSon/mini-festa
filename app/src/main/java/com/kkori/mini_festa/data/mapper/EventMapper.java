@@ -19,6 +19,7 @@ public class EventMapper implements Mapper<EventEntity, Event> {
                 ticketsMapper.mapFrom(from.getTickets()),
                 from.getLocation().getName(),
                 from.getMetaData().getCoverImage(),
+                from.getMetaData().getContents(),
                 from.getHostOrganization().getName());
     }
 
@@ -30,8 +31,9 @@ public class EventMapper implements Mapper<EventEntity, Event> {
                 from.getStartDate(),
                 from.getTicketPriceRange(),
                 from.getLocationName(),
-                from.getHostName(),
-                from.getCoverImage());
+                from.getCoverImage(),
+                from.getContents(),
+                from.getHostName());
     }
 
 }

@@ -12,6 +12,8 @@ import com.kkori.mini_festa.presentation.model.EventModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.subscribers.DisposableSubscriber;
 
 public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> implements EventBoardContract.Presenter {
@@ -23,12 +25,18 @@ public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> 
     private int pageIndex = 1;
     private boolean isLoadingEvent = false;
 
-    public EventBoardPresenter(GetRemoteEventListUseCase getRemoteEventListUseCase,
+    @Inject
+    public EventBoardPresenter(EventBoardFragment eventFragment,
+                               GetRemoteEventListUseCase getRemoteEventListUseCase,
                                GetLocalEventListUseCase getLocalEventListUseCase,
                                EventModelMapper eventModelMapper) {
+
         this.getRemoteEventListUseCase = getRemoteEventListUseCase;
         this.getLocalEventListUseCase = getLocalEventListUseCase;
         this.eventModelMapper = eventModelMapper;
+
+        createView(eventFragment);
+        eventFragment.setPresenter(this);
     }
 
     @Override

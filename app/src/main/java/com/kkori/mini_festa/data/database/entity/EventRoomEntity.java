@@ -14,6 +14,7 @@ public class EventRoomEntity {
     private String ticketPriceRange;
     private String locationName;
     private String coverImage;
+    private String contents;
     private String hostName;
 
     public EventRoomEntity(int eventId,
@@ -23,6 +24,7 @@ public class EventRoomEntity {
                            String ticketPriceRange,
                            String locationName,
                            String coverImage,
+                           String contents,
                            String hostName) {
         this.eventId = eventId;
         this.name = name;
@@ -31,6 +33,7 @@ public class EventRoomEntity {
         this.ticketPriceRange = ticketPriceRange;
         this.locationName = locationName;
         this.coverImage = coverImage;
+        this.contents = contents;
         this.hostName = hostName;
     }
 
@@ -60,6 +63,10 @@ public class EventRoomEntity {
 
     public String getCoverImage() {
         return coverImage;
+    }
+
+    public String getContents() {
+        return contents;
     }
 
     public String getHostName() {

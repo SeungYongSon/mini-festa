@@ -13,7 +13,7 @@ public class EventRoomMapper implements Mapper<List<Event>, List<EventRoomEntity
     public List<EventRoomEntity> mapFrom(List<Event> from) {
         ArrayList<EventRoomEntity> roomEntities = new ArrayList<>();
 
-        for(Event event : from) {
+        for (Event event : from) {
             roomEntities.add(new EventRoomEntity(
                     event.getEventId(),
                     event.getName(),
@@ -21,8 +21,9 @@ public class EventRoomMapper implements Mapper<List<Event>, List<EventRoomEntity
                     event.getStartDate(),
                     event.getTicketPriceRange(),
                     event.getLocationName(),
-                    event.getName(),
-                    event.getCoverImage()));
+                    event.getCoverImage(),
+                    event.getContents(),
+                    event.getName()));
         }
 
         return roomEntities;

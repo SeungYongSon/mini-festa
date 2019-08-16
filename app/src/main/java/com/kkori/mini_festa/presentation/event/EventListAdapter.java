@@ -16,12 +16,19 @@ import com.kkori.mini_festa.presentation.model.EventModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventListViewHolder> {
 
-    private ArrayList<EventModel> eventModels = new ArrayList<>();
+    private ArrayList<EventModel> eventModels;
+
+    @Inject
+    public EventListAdapter() {
+        this.eventModels = new ArrayList<>();
+    }
 
     @NonNull
     @Override

@@ -9,6 +9,7 @@ public class EventModel {
     private String ticketPriceRange;
     private String locationName;
     private String coverImage;
+    private String contents;
     private String hostName;
 
     public EventModel(int eventId,
@@ -18,6 +19,7 @@ public class EventModel {
                       String ticketPriceRange,
                       String locationName,
                       String coverImage,
+                      String contents,
                       String hostName) {
         this.eventId = eventId;
         this.name = name;
@@ -26,6 +28,7 @@ public class EventModel {
         this.ticketPriceRange = ticketPriceRange;
         this.locationName = locationName;
         this.coverImage = coverImage;
+        this.contents = contents;
         this.hostName = hostName;
     }
 
@@ -51,6 +54,10 @@ public class EventModel {
 
     public String getCoverImage() {
         return coverImage;
+    }
+
+    public String getContents() {
+        return contents;
     }
 
     public String getHostName() {

@@ -16,6 +16,7 @@ public class EventModelMapper implements Mapper<Event, EventModel> {
                 from.getTicketPriceRange(),
                 from.getLocationName(),
                 from.getCoverImage(),
+                from.getContents(),
                 from.getHostName());
     }
 
