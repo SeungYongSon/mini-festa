@@ -12,6 +12,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkori.mini_festa.R;
+import com.kkori.mini_festa.presentation.MainActivity;
 import com.kkori.mini_festa.presentation.base.BaseFragment;
 import com.kkori.mini_festa.presentation.event.EventListAdapter;
 import com.kkori.mini_festa.presentation.model.EventModel;
@@ -27,10 +28,13 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 public class EventBoardFragment extends BaseFragment implements EventBoardContract.View, NestedScrollView.OnScrollChangeListener {
 
     @Inject
-    EventBoardPresenter presenter;
+    EventBoardContract.Presenter presenter;
 
     @Inject
     EventListAdapter eventListAdapter;
+
+    @BindView(R.id.event_recycler)
+    RecyclerView eventRecycler;
 
     @BindView(R.id.first_loading_progress)
     ProgressBar firstLoadingProgress;
@@ -38,22 +42,30 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
     @BindView(R.id.more_loading_progress)
     ProgressBar moreLoadingProgress;
 
+    @BindView(R.id.nested_scroll)
+    NestedScrollView nestedScrollView;
+
     @Override
     public int initLayoutResource() {
-        return R.layout.fragment_event;
+        return R.layout.fragment_event_board;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter.loadEvent();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NestedScrollView nestedScrollView = view.findViewById(R.id.nested_scroll);
         nestedScrollView.setOnScrollChangeListener(this);
-
-        RecyclerView eventRecycler = view.findViewById(R.id.event_recycler);
         initEventRecyclerView(eventRecycler);
 
-        presenter.loadEvent();
+        if (eventListAdapter.getItemCount() > 0) {
+            hideProgress(false);
+        }
     }
 
     private void initEventRecyclerView(RecyclerView recyclerView) {
@@ -84,11 +96,6 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
     }
 
     @Override
-    public void showToast(String text) {
-        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
         if (v.getChildAt(v.getChildCount() - 1) != null) {
             if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
@@ -97,4 +104,19 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
             }
         }
     }
+
+    @Override
+    public void showToast(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void moveEventDetail(EventModel event) {
+        MainActivity mainActivity = (MainActivity) getActivity();
+
+        if (mainActivity != null) {
+            mainActivity.changeToEventDetailFragment(event);
+        }
+    }
+
 }

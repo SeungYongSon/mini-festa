@@ -10,6 +10,8 @@ public interface EventBoardContract {
     interface View extends BaseContract.View {
         Boolean checkNetWork();
 
+        void moveEventDetail(EventModel event);
+
         void addEventsToAdapter(List<EventModel> events);
 
         void showMoreLoadingProgress();

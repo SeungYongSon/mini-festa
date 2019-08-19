@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kkori.mini_festa.R;
+import com.kkori.mini_festa.presentation.event.board.EventBoardContract;
 import com.kkori.mini_festa.presentation.model.EventModel;
 
 import java.util.ArrayList;
@@ -24,9 +25,11 @@ import butterknife.ButterKnife;
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventListViewHolder> {
 
     private ArrayList<EventModel> eventModels;
+    private EventBoardContract.View view;
 
     @Inject
-    public EventListAdapter() {
+    EventListAdapter(EventBoardContract.View view) {
+        this.view = view;
         this.eventModels = new ArrayList<>();
     }
 
@@ -41,6 +44,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     @Override
     public void onBindViewHolder(@NonNull EventListViewHolder holder, int position) {
         holder.bind(eventModels.get(position));
+        holder.itemView.setOnClickListener(v -> view.moveEventDetail(eventModels.get(position)));
     }
 
     @Override

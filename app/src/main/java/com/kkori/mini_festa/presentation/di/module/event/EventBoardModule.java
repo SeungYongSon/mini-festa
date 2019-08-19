@@ -15,6 +15,8 @@ import com.kkori.mini_festa.domain.entity.event.EventServiceImp;
 import com.kkori.mini_festa.domain.usecase.GetLocalEventListUseCase;
 import com.kkori.mini_festa.domain.usecase.GetRemoteEventListUseCase;
 import com.kkori.mini_festa.presentation.di.scope.EventFragmentScope;
+import com.kkori.mini_festa.presentation.event.board.EventBoardContract;
+import com.kkori.mini_festa.presentation.event.board.EventBoardPresenter;
 import com.kkori.mini_festa.presentation.mapper.EventModelMapper;
 
 import dagger.Module;
@@ -78,6 +80,18 @@ public class EventBoardModule {
     @EventFragmentScope
     EventRoomMapper provideEventRoomMapper() {
         return new EventRoomMapper();
+    }
+
+    @Provides
+    @EventFragmentScope
+    EventBoardContract.Presenter provideEventBoardContractPresenter(EventBoardPresenter eventBoardPresenter) {
+        return eventBoardPresenter;
+    }
+
+    @Provides
+    @EventFragmentScope
+    EventBoardContract.View provideEventBoardContractView(EventBoardPresenter eventBoardPresenter) {
+        return eventBoardPresenter.getView();
     }
 
 }

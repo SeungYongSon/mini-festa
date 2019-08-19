@@ -26,10 +26,10 @@ public class EventBoardPresenter extends BasePresenter<EventBoardContract.View> 
     private boolean isLoadingEvent = false;
 
     @Inject
-    public EventBoardPresenter(EventBoardFragment eventFragment,
-                               GetRemoteEventListUseCase getRemoteEventListUseCase,
-                               GetLocalEventListUseCase getLocalEventListUseCase,
-                               EventModelMapper eventModelMapper) {
+    EventBoardPresenter(EventBoardFragment eventFragment,
+                        GetRemoteEventListUseCase getRemoteEventListUseCase,
+                        GetLocalEventListUseCase getLocalEventListUseCase,
+                        EventModelMapper eventModelMapper) {
 
         this.getRemoteEventListUseCase = getRemoteEventListUseCase;
         this.getLocalEventListUseCase = getLocalEventListUseCase;

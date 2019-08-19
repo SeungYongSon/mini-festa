@@ -18,7 +18,6 @@ public abstract class BaseFragment extends DaggerFragment implements BaseContrac
 
     public abstract int initLayoutResource();
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(initLayoutResource(), container, false);
@@ -34,8 +33,8 @@ public abstract class BaseFragment extends DaggerFragment implements BaseContrac
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         presenter.destroyView();
     }
 
