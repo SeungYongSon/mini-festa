@@ -12,17 +12,27 @@ public interface EventBoardContract {
 
         void moveEventDetail(EventModel event);
 
-        void addEventsToAdapter(List<EventModel> events);
+        void addEventToAdapter(List<EventModel> events);
 
-        void showMoreLoadingProgress();
+        void addEventToAdapter(EventModel event);
 
-        void hideProgress(boolean isMoreLoading);
+        void showIntroduce(boolean isFavorite);
+
+        void showLoadingProgress(boolean isMoreLoading);
+
+        void hideLoadingProgress(boolean isMoreLoading);
 
         void showToast(String text);
+
+        void clearEventList();
     }
 
     interface Presenter extends BaseContract.Presenter<View> {
-        void loadEvent();
+        void initEvent();
+
+        void loadMoreEvent();
+
+        void loadFavoriteEvent();
     }
 
 }

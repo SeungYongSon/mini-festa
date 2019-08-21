@@ -14,6 +14,8 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 public class EventRepositoryImp implements EventRepository {
 
@@ -47,7 +49,7 @@ public class EventRepositoryImp implements EventRepository {
     }
 
     @Override
-    public Flowable<List<Event>> getLocalEventList() {
+    public Single<List<Event>> getLocalEventList() {
         return eventLocalDataSource.getLocalEventList()
                 .map(eventRoomEntities -> {
                     ArrayList<Event> list = new ArrayList<>();
@@ -61,8 +63,28 @@ public class EventRepositoryImp implements EventRepository {
     }
 
     @Override
-    public Completable saveLocalEvent(List<Event> events) {
-        return eventLocalDataSource.saveLocalEvent(eventRoomMapper.mapFrom(events));
+    public Completable saveLocalEvent(Event event) {
+        return eventLocalDataSource.saveLocalEvent(eventRoomMapper.mapFrom(event));
+    }
+
+    @Override
+    public Single<List<Event>> getFavoriteEventList() {
+        return eventLocalDataSource.getFavoriteEventList()
+                .map(eventRoomEntities -> {
+                    ArrayList<Event> list = new ArrayList<>();
+
+                    for (EventRoomEntity event : eventRoomEntities) {
+                        list.add(eventMapper.mapFrom(event));
+                    }
+
+                    return list;
+                });
+    }
+
+    @Override
+    public Maybe<Event> selectEvent(int id) {
+        return eventLocalDataSource.selectFavoriteEvent(id)
+                .map(eventRoomEntity -> eventMapper.mapFrom(eventRoomEntity));
     }
 
 }

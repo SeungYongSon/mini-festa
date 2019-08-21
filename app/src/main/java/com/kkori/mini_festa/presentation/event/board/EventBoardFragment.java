@@ -3,7 +3,9 @@ package com.kkori.mini_festa.presentation.event.board;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,10 +30,16 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 public class EventBoardFragment extends BaseFragment implements EventBoardContract.View, NestedScrollView.OnScrollChangeListener {
 
     @Inject
-    EventBoardContract.Presenter presenter;
+    public EventBoardContract.Presenter presenter;
 
     @Inject
     EventListAdapter eventListAdapter;
+
+    @BindView(R.id.introduce)
+    LinearLayout introduce;
+
+    @BindView(R.id.favorite_introduce)
+    TextView favoriteIntroduce;
 
     @BindView(R.id.event_recycler)
     RecyclerView eventRecycler;
@@ -45,6 +53,8 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
     @BindView(R.id.nested_scroll)
     NestedScrollView nestedScrollView;
 
+    private boolean isFavoriteIntroduce = false;
+
     @Override
     public int initLayoutResource() {
         return R.layout.fragment_event_board;
@@ -53,7 +63,7 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.loadEvent();
+        presenter.initEvent();
     }
 
     @Override
@@ -64,8 +74,10 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
         initEventRecyclerView(eventRecycler);
 
         if (eventListAdapter.getItemCount() > 0) {
-            hideProgress(false);
+            hideLoadingProgress(false);
         }
+
+        showIntroduce(isFavoriteIntroduce);
     }
 
     private void initEventRecyclerView(RecyclerView recyclerView) {
@@ -80,17 +92,38 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
     }
 
     @Override
-    public void addEventsToAdapter(List<EventModel> events) {
+    public void addEventToAdapter(List<EventModel> events) {
         eventListAdapter.add(events);
+        eventRecycler.smoothScrollToPosition(eventListAdapter.getInsertPoint());
     }
 
     @Override
-    public void showMoreLoadingProgress() {
-        moreLoadingProgress.setVisibility(View.VISIBLE);
+    public void addEventToAdapter(EventModel event) {
+        eventListAdapter.add(event);
+        eventRecycler.smoothScrollToPosition(eventListAdapter.getInsertPoint());
     }
 
     @Override
-    public void hideProgress(boolean isMoreLoading) {
+    public void showIntroduce(boolean isFavorite) {
+        if (isFavorite) {
+            introduce.setVisibility(View.INVISIBLE);
+            favoriteIntroduce.setVisibility(View.VISIBLE);
+            isFavoriteIntroduce = true;
+        } else {
+            introduce.setVisibility(View.VISIBLE);
+            favoriteIntroduce.setVisibility(View.INVISIBLE);
+            isFavoriteIntroduce = false;
+        }
+    }
+
+    @Override
+    public void showLoadingProgress(boolean isMoreLoading) {
+        if (isMoreLoading) moreLoadingProgress.setVisibility(View.VISIBLE);
+        else firstLoadingProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoadingProgress(boolean isMoreLoading) {
         if (isMoreLoading) moreLoadingProgress.setVisibility(View.GONE);
         else firstLoadingProgress.setVisibility(View.GONE);
     }
@@ -100,7 +133,7 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
         if (v.getChildAt(v.getChildCount() - 1) != null) {
             if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
                     scrollY > oldScrollY) {
-                presenter.loadEvent();
+                presenter.loadMoreEvent();
             }
         }
     }
@@ -111,11 +144,16 @@ public class EventBoardFragment extends BaseFragment implements EventBoardContra
     }
 
     @Override
+    public void clearEventList() {
+        eventListAdapter.remove();
+    }
+
+    @Override
     public void moveEventDetail(EventModel event) {
         MainActivity mainActivity = (MainActivity) getActivity();
 
         if (mainActivity != null) {
-            mainActivity.changeToEventDetailFragment(event);
+            mainActivity.changeToEventDetailFragment(event.getEventId());
         }
     }
 

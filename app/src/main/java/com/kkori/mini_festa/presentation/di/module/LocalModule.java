@@ -18,7 +18,9 @@ public class LocalModule {
     @Provides
     @Singleton
     EventDataBase provideEventDatabase(Context context) {
-        return Room.databaseBuilder(context, EventDataBase.class, "event.db").build();
+        return Room.databaseBuilder(context, EventDataBase.class, "event.db")
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
     @Provides

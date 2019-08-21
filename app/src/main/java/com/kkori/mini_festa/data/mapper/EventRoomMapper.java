@@ -4,29 +4,24 @@ import com.kkori.mini_festa.data.database.entity.EventRoomEntity;
 import com.kkori.mini_festa.domain.base.Mapper;
 import com.kkori.mini_festa.domain.entity.Event;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class EventRoomMapper implements Mapper<List<Event>, List<EventRoomEntity>> {
+public class EventRoomMapper implements Mapper<Event, EventRoomEntity> {
 
     @Override
-    public List<EventRoomEntity> mapFrom(List<Event> from) {
-        ArrayList<EventRoomEntity> roomEntities = new ArrayList<>();
-
-        for (Event event : from) {
-            roomEntities.add(new EventRoomEntity(
-                    event.getEventId(),
-                    event.getName(),
-                    event.getEventSignature(),
-                    event.getStartDate(),
-                    event.getTicketPriceRange(),
-                    event.getLocationName(),
-                    event.getCoverImage(),
-                    event.getContents(),
-                    event.getName()));
-        }
-
-        return roomEntities;
+    public EventRoomEntity mapFrom(Event from) {
+        return new EventRoomEntity(
+                from.getEventId(),
+                from.getName(),
+                from.getEventSignature(),
+                from.getStartDate(),
+                from.getEndDate(),
+                from.getTicketPriceRange(),
+                from.getTicketBoughtCount(),
+                from.getLocationName(),
+                from.getCoverImage(),
+                from.getContents(),
+                from.getHostName(),
+                from.getProfileImage(),
+                from.isFavorite());
     }
 
 }

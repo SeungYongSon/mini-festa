@@ -16,11 +16,14 @@ public class EventMapper implements Mapper<EventEntity, Event> {
                 from.getName(),
                 from.getEventSignature(),
                 from.getStartDate(),
+                from.getEndDate(),
                 ticketsMapper.mapFrom(from.getTickets()),
                 from.getLocation().getName(),
                 from.getMetaData().getCoverImage(),
                 from.getMetaData().getContents(),
-                from.getHostOrganization().getName());
+                from.getHostOrganization().getName(),
+                from.getHostOrganization().getProfileImage(),
+                false);
     }
 
     public Event mapFrom(EventRoomEntity from) {
@@ -29,11 +32,15 @@ public class EventMapper implements Mapper<EventEntity, Event> {
                 from.getName(),
                 from.getEventSignature(),
                 from.getStartDate(),
+                from.getEndDate(),
                 from.getTicketPriceRange(),
+                from.getTicketBoughtCount(),
                 from.getLocationName(),
                 from.getCoverImage(),
                 from.getContents(),
-                from.getHostName());
+                from.getHostName(),
+                from.getProfileImage(),
+                from.isFavorite());
     }
 
 }

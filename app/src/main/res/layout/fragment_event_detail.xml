@@ -29,6 +29,7 @@
                 android:layout_marginTop="26dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
+                android:maxLines="2"
                 android:text="이름"
                 android:textColor="#000000"
                 android:textSize="22sp"
@@ -41,14 +42,27 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
+                android:lines="1"
+                android:maxLines="1"
                 android:text="at 장소"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/ticket_bought_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:drawableStart="@drawable/ic_ticket_bought_count"
+                android:drawablePadding="8dp"
+                android:text="0명" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="32dp"
                 android:background="@color/colorGray" />
@@ -71,6 +85,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
+                android:maxLines="2"
                 android:text="2019년 8월 31일"
                 android:textSize="14sp" />
 
@@ -84,15 +99,37 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/host_tv"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="GDG"
-                android:textSize="14sp" />
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/logo"
+                    app:civ_border_color="@color/colorGray"
+                    app:civ_border_width="0.25dp" />
+
+                <TextView
+                    android:id="@+id/host_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:drawableEnd="@drawable/ic_move_user_page"
+                    android:drawablePadding="16dp"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="GDG"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -119,8 +156,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1.5dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:layerType="software"
                 android:src="@drawable/drawable_dash_line" />
@@ -137,8 +174,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1.5dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:layerType="software"
                 android:src="@drawable/drawable_dash_line" />

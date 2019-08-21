@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:lines="1"
             android:maxLines="1"
             android:text="date"
             android:textSize="10sp"
@@ -76,6 +77,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
+            android:lines="1"
             android:maxLines="1"
             android:text="price"
             android:textSize="10sp" />

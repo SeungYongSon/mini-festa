@@ -9,7 +9,6 @@ import com.kkori.mini_festa.R;
 import com.kkori.mini_festa.presentation.base.BaseActivity;
 import com.kkori.mini_festa.presentation.event.board.EventBoardFragment;
 import com.kkori.mini_festa.presentation.event.detail.EventDetailFragment;
-import com.kkori.mini_festa.presentation.model.EventModel;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -62,17 +61,19 @@ public class MainActivity extends BaseActivity {
             if (tag == R.drawable.ic_favorite_border) {
                 likeImage.setImageResource(R.drawable.ic_favorite);
                 likeImage.setTag(R.drawable.ic_favorite);
+                eventBoardFragment.presenter.loadFavoriteEvent();
             } else {
                 likeImage.setImageResource(R.drawable.ic_favorite_border);
                 likeImage.setTag(R.drawable.ic_favorite_border);
+                eventBoardFragment.presenter.initEvent();
             }
         }
     }
 
-    public void changeToEventDetailFragment(EventModel eventModel) {
+    public void changeToEventDetailFragment(int eventId) {
         Bundle args = new Bundle();
 
-        args.putParcelable("eventModel", eventModel);
+        args.putInt("eventId", eventId);
 
         eventDetailFragment.setArguments(args);
 
