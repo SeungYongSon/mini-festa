@@ -10,15 +10,22 @@ import com.kkori.mini_festa.data.database.entity.EventRoomEntity;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 @Dao
 public interface EventDao {
 
     @Query("SELECT * FROM eventroomentity")
-    Flowable<List<EventRoomEntity>> getEventList();
+    Single<List<EventRoomEntity>> getEventList();
+
+    @Query("SELECT * FROM eventroomentity where isFavorite")
+    Single<List<EventRoomEntity>> getFavoriteEventList();
+
+    @Query("SELECT * FROM eventroomentity where eventId = :id ")
+    Maybe<EventRoomEntity> selectById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable saveEvent(List<EventRoomEntity> event);
+    Completable saveEvent(EventRoomEntity event);
 
 }

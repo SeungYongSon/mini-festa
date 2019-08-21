@@ -10,17 +10,29 @@ public interface EventBoardContract {
     interface View extends BaseContract.View {
         Boolean checkNetWork();
 
-        void addEventsToAdapter(List<EventModel> events);
+        void moveEventDetail(EventModel event);
 
-        void showMoreLoadingProgress();
+        void addEventToAdapter(List<EventModel> events);
 
-        void hideProgress(boolean isMoreLoading);
+        void addEventToAdapter(EventModel event);
+
+        void showIntroduce(boolean isFavorite);
+
+        void showLoadingProgress(boolean isMoreLoading);
+
+        void hideLoadingProgress(boolean isMoreLoading);
 
         void showToast(String text);
+
+        void clearEventList();
     }
 
     interface Presenter extends BaseContract.Presenter<View> {
-        void loadEvent();
+        void initEvent();
+
+        void loadMoreEvent();
+
+        void loadFavoriteEvent();
     }
 
 }

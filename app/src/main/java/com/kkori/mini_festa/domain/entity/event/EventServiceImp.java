@@ -1,7 +1,5 @@
 package com.kkori.mini_festa.domain.entity.event;
 
-import android.util.Log;
-
 import com.kkori.mini_festa.domain.entity.Event;
 import com.kkori.mini_festa.domain.entity.Ticket;
 
@@ -14,14 +12,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 public class EventServiceImp implements EventService {
 
     private static final String PRICE_FORMAT = "￦ %s ~ ￦ %s";
     private static final String UK_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    private static final String KR_DATE_FORMAT = "yyyy년 MM월 dd일 a hh:mm";
+    private static final String KR_DATE_FORMAT = "yyyy년 MM월 dd일 hh:mm";
 
     private EventRepository eventRepository;
 
@@ -35,27 +35,51 @@ public class EventServiceImp implements EventService {
                 .doOnNext(eventList -> {
                     for (Event event : eventList) {
                         event.setTicketPriceRange(createPriceRange(event.getTickets()));
+                        event.setTicketBoughtCount(countBoughtTicket(event.getTickets()));
                         event.setStartDate(createKoreaData(event.getStartDate()));
+                        event.setEndDate(createKoreaData(event.getEndDate()));
+
+                        updateEvent(event);
                     }
-
-                    eventRepository.saveLocalEvent(eventList)
-                            .subscribe(new DisposableCompletableObserver() {
-                                @Override
-                                public void onComplete() {
-                                    Log.e("Save Event", "Complete!");
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    Log.e("Save Event", e.getMessage());
-                                }
-                            });
                 });
     }
 
+
     @Override
-    public Flowable<List<Event>> getLocalEventList() {
+    public Single<List<Event>> getLocalEventList() {
         return eventRepository.getLocalEventList();
+    }
+
+    @Override
+    public Single<List<Event>> getFavoriteEventList() {
+        return eventRepository.getFavoriteEventList();
+    }
+
+    @Override
+    public Maybe<Event> getEventThroughId(int id) {
+        return eventRepository.selectEvent(id);
+    }
+
+    @Override
+    public Completable setFavoriteEvent(int id, boolean isFavorite) {
+        return eventRepository.selectEvent(id).flatMapCompletable(event -> {
+            event.setIsFavorite(isFavorite);
+            return eventRepository.saveLocalEvent(event);
+        });
+    }
+
+    private void updateEvent(Event event) {
+        eventRepository.selectEvent(event.getEventId())
+                .map(favoriteEvent -> {
+                    if (favoriteEvent.isFavorite()) {
+                        event.setIsFavorite(true);
+                    } else {
+                        event.setIsFavorite(false);
+                    }
+                   return favoriteEvent;
+                })
+                .doOnComplete(() -> eventRepository.saveLocalEvent(event).subscribe())
+                .subscribe();
     }
 
     private String createKoreaData(String ukTime) {
@@ -89,8 +113,22 @@ public class EventServiceImp implements EventService {
             DecimalFormat formatter = new DecimalFormat("###,###");
 
             if (maxPrice == 0 && minPrice == 0) return "무료";
+            else if (minPrice == 0) return "무료 ~ " + '￦' + formatter.format(maxPrice);
             else if (maxPrice == minPrice) return '￦' + formatter.format(maxPrice);
             return String.format(PRICE_FORMAT, formatter.format(minPrice), formatter.format(maxPrice));
+        }
+    }
+
+    private String countBoughtTicket(List<Ticket> tickets) {
+        if (tickets.isEmpty()) return "외부 이벤트";
+        else {
+            int count = 0;
+
+            for (Ticket ticket : tickets) {
+                count += ticket.getCount();
+            }
+
+            return count + "명";
         }
     }
 

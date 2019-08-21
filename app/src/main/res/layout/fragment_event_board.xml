@@ -30,29 +30,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageView"
+            <LinearLayout
+                android:id="@+id/introduce"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/eventboard_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:src="@drawable/eventboard_title" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event_board_explanation"
+                    android:textSize="11sp"/>
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/event_board_explanation"
-                android:textSize="11sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                android:id="@+id/favorite_introduce"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="@+id/introduce"
+                app:layout_constraintStart_toStartOf="@+id/introduce"
+                app:layout_constraintTop_toTopOf="@+id/introduce"
+                app:layout_constraintBottom_toBottomOf="@+id/introduce"
+                android:text="좋아요 누른 티켓"
+                android:visibility="invisible"
+                android:textColor="@color/colorGray"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:gravity="center_vertical" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/event_recycler"
@@ -67,7 +85,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/more_loading_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/introduce"
                 app:spanCount="2"
                 tools:listitem="@layout/item_event_board" />
 
@@ -75,15 +93,12 @@
                 android:id="@+id/more_loading_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginBottom="8dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.core.widget.NestedScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

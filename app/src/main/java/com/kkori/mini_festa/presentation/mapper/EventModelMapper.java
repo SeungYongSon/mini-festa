@@ -13,10 +13,15 @@ public class EventModelMapper implements Mapper<Event, EventModel> {
                 from.getName(),
                 from.getEventSignature(),
                 from.getStartDate(),
+                from.getEndDate(),
                 from.getTicketPriceRange(),
+                from.getTicketBoughtCount(),
                 from.getLocationName(),
                 from.getCoverImage(),
-                from.getHostName());
+                from.getContents(),
+                from.getHostName(),
+                from.getProfileImage(),
+                from.isFavorite());
     }
 
 }
