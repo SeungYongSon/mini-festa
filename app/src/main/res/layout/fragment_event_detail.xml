@@ -29,7 +29,6 @@
                 android:layout_marginTop="26dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:maxLines="2"
                 android:text="이름"
                 android:textColor="#000000"
                 android:textSize="22sp"
@@ -42,8 +41,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:lines="1"
-                android:maxLines="1"
+                android:ellipsize="marquee"
+                android:singleLine="true"
                 android:text="at 장소"
                 android:textSize="14sp" />
 
@@ -123,9 +122,9 @@
                     android:layout_marginStart="8dp"
                     android:drawableEnd="@drawable/ic_move_user_page"
                     android:drawablePadding="16dp"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
                     android:text="GDG"
                     android:textSize="12sp" />
 

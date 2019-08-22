@@ -124,7 +124,6 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
         } else {
             likeBtn.setText("좋아요");
         }
-
     }
 
     @Override
