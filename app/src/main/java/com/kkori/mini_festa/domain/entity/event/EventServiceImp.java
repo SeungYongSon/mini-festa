@@ -46,7 +46,7 @@ public class EventServiceImp implements EventService {
     public Completable setFavoriteEvent(int id, boolean isFavorite) {
         return eventRepository.selectEvent(id).flatMapCompletable(event -> {
             event.setIsFavorite(isFavorite);
-            return eventRepository.saveLocalEvent(event);
+            return eventRepository.updateLocalEvent(event);
         });
     }
 
@@ -58,10 +58,11 @@ public class EventServiceImp implements EventService {
                     } else {
                         event.setIsFavorite(false);
                     }
+
+                    eventRepository.updateLocalEvent(event).subscribe();
+
                     return favoriteEvent;
-                })
-                .doOnComplete(() -> eventRepository.saveLocalEvent(event).subscribe())
-                .subscribe();
+                }).doOnComplete(() -> eventRepository.saveLocalEvent(event).subscribe()).subscribe();
     }
 
 }

@@ -14,6 +14,8 @@ public interface EventLocalDataSource {
 
     Completable saveLocalEvent(EventRoomEntity event);
 
+    Completable updateLocalEvent(EventRoomEntity event);
+
     Single<List<EventRoomEntity>> getFavoriteEventList();
 
     Maybe<EventRoomEntity> selectFavoriteEvent(int id);

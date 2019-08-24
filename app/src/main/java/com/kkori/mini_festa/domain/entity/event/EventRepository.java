@@ -17,6 +17,8 @@ public interface EventRepository {
 
     Completable saveLocalEvent(Event event);
 
+    Completable updateLocalEvent(Event event);
+
     Single<List<Event>> getFavoriteEventList();
 
     Maybe<Event> selectEvent(int id);

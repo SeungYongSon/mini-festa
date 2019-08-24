@@ -29,7 +29,8 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 public class EventBoardFragment extends BaseFragment implements EventBoardContract.View, NestedScrollView.OnScrollChangeListener {
 
     @Inject
-    public EventBoardContract.Presenter presenter;
+    public
+    EventBoardContract.Presenter presenter;
 
     @Inject
     EventListAdapter eventListAdapter;

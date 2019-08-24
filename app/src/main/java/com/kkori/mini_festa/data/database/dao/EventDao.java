@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.kkori.mini_festa.data.database.entity.EventRoomEntity;
 
@@ -27,5 +28,8 @@ public interface EventDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable saveEvent(EventRoomEntity event);
+
+    @Update
+    Completable updateEvent(EventRoomEntity event);
 
 }

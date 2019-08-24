@@ -8,7 +8,7 @@ public class EventModel {
     private String name;
     private String eventSignature;
     private String startDate;
-    private String endDate;
+    private String eventProgressTime;
     private List<TicketModel> tickets;
     private String ticketPriceRange;
     private String ticketBoughtCount;
@@ -23,7 +23,7 @@ public class EventModel {
                       String name,
                       String eventSignature,
                       String startDate,
-                      String endDate,
+                      String eventProgressTime,
                       List<TicketModel> tickets,
                       String ticketPriceRange,
                       String ticketBoughtCount,
@@ -37,7 +37,7 @@ public class EventModel {
         this.name = name;
         this.eventSignature = eventSignature;
         this.startDate = startDate;
-        this.endDate = endDate;
+        this.eventProgressTime = eventProgressTime;
         this.tickets = tickets;
         this.ticketPriceRange = ticketPriceRange;
         this.ticketBoughtCount = ticketBoughtCount;
@@ -65,8 +65,8 @@ public class EventModel {
         return startDate;
     }
 
-    public String getEndDate() {
-        return endDate;
+    public String getEventProgressTime() {
+        return eventProgressTime;
     }
 
     public List<TicketModel> getTickets() {

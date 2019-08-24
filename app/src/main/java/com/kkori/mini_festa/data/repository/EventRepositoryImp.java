@@ -68,6 +68,11 @@ public class EventRepositoryImp implements EventRepository {
     }
 
     @Override
+    public Completable updateLocalEvent(Event event) {
+        return eventLocalDataSource.updateLocalEvent(eventRoomMapper.mapFrom(event));
+    }
+
+    @Override
     public Single<List<Event>> getFavoriteEventList() {
         return eventLocalDataSource.getFavoriteEventList()
                 .map(eventRoomEntities -> {

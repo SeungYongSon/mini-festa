@@ -17,6 +17,7 @@ import com.kkori.mini_festa.domain.entity.event.EventRepository;
 import com.kkori.mini_festa.domain.entity.event.EventService;
 import com.kkori.mini_festa.domain.entity.event.EventServiceImp;
 import com.kkori.mini_festa.presentation.di.scope.EventFragmentScope;
+import com.kkori.mini_festa.presentation.mapper.EventFormat;
 import com.kkori.mini_festa.presentation.mapper.EventModelMapper;
 import com.kkori.mini_festa.presentation.mapper.LocationModelMapper;
 import com.kkori.mini_festa.presentation.mapper.TicketModelsMapper;
@@ -62,8 +63,8 @@ public class EventModule {
 
     @Provides
     @EventFragmentScope
-    EventModelMapper provideEventModelMapper() {
-        return new EventModelMapper(new TicketModelsMapper(), new LocationModelMapper());
+    EventModelMapper provideEventModelMapper(EventFormat eventFormat) {
+        return new EventModelMapper(new TicketModelsMapper(eventFormat), new LocationModelMapper(), eventFormat);
     }
 
     @Provides

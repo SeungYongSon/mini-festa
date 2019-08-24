@@ -7,25 +7,24 @@ import com.kkori.mini_festa.presentation.model.EventModel;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class EventModelMapper implements Mapper<Event, EventModel> {
 
-    private static final String PRICE_FORMAT = "￦ %s ~ ￦ %s";
-    private static final String UK_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    private static final String KR_DATE_FORMAT = "yyyy년 MM월 dd일 hh:mm";
-
     private TicketModelsMapper ticketModelsMapper;
     private LocationModelMapper locationModelMapper;
+    private EventFormat eventFormat;
 
-    public EventModelMapper(TicketModelsMapper ticketModelsMapper, LocationModelMapper locationModelMapper) {
+    public EventModelMapper(TicketModelsMapper ticketModelsMapper,
+                            LocationModelMapper locationModelMapper,
+                            EventFormat eventFormat) {
         this.ticketModelsMapper = ticketModelsMapper;
         this.locationModelMapper = locationModelMapper;
+        this.eventFormat = eventFormat;
     }
 
     @Override
@@ -34,10 +33,10 @@ public class EventModelMapper implements Mapper<Event, EventModel> {
                 from.getEventId(),
                 from.getName(),
                 from.getEventSignature(),
-                createKoreaData(from.getStartDate()),
-                createKoreaData(from.getEndDate()),
+                manufactureEventStartDate(from.getStartDate()),
+                manufactureEndDate(from.getStartDate(), from.getEndDate()),
                 ticketModelsMapper.mapFrom(from.getTickets()),
-                createPriceRange(from.getTickets()),
+                manufacturePriceRange(from.getTickets()),
                 countBoughtTicket(from.getTickets()),
                 locationModelMapper.mapFrom(from.getLocation()),
                 from.getCoverImage(),
@@ -47,23 +46,57 @@ public class EventModelMapper implements Mapper<Event, EventModel> {
                 from.isFavorite());
     }
 
-    private String createKoreaData(String ukTime) {
-        SimpleDateFormat transUK = new SimpleDateFormat(UK_DATE_FORMAT, Locale.UK);
-        SimpleDateFormat transKR = new SimpleDateFormat(KR_DATE_FORMAT, Locale.KOREA);
-
+    private String manufactureEventStartDate(String time) {
         Calendar cal = Calendar.getInstance();
 
         try {
-            cal.setTime(transUK.parse(ukTime));
+            cal.setTime(eventFormat.getTransUKFormat().parse(time));
             cal.add(Calendar.HOUR, 9);
-            return transKR.format(cal.getTime());
+            return eventFormat.getTransStartDateEventFormat().format(cal.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
-            return ukTime;
+            return time;
         }
     }
 
-    private String createPriceRange(List<Ticket> tickets) {
+    private String manufactureEndDate(String startEventDate, String endEventDate) {
+        Calendar calendarStart = Calendar.getInstance();
+        Calendar calendarEnd = Calendar.getInstance();
+
+        try {
+            Date startDate = eventFormat.getTransUKFormat().parse(startEventDate);
+            Date endDate = eventFormat.getTransUKFormat().parse(endEventDate);
+
+            calendarStart.setTime(startDate);
+            calendarEnd.setTime(endDate);
+
+            calendarStart.add(Calendar.HOUR, 9);
+            calendarEnd.add(Calendar.HOUR, 9);
+
+            long startTime = calendarStart.getTime().getTime();
+            long endTime = calendarEnd.getTime().getTime();
+
+            long eventTime = endTime - startTime;
+
+            if (eventTime > eventFormat.getYear()) {
+                return eventFormat.getTransDifferentYearEventFormat().format(calendarStart.getTime())
+                        + "\n- " + eventFormat.getTransDifferentYearEventFormat().format(calendarEnd.getTime());
+            } else if (eventTime > eventFormat.getDay()) {
+                return eventFormat.getTransDifferentMonthAndDayEventFormat().format(calendarStart.getTime())
+                        + "\n- " + eventFormat.getTransDifferentMonthAndDayEndTimeEventFormat().format(calendarEnd.getTime());
+            } else {
+                String startEventTime = eventFormat.getTransSameDayEventFormat().format(calendarStart.getTime());
+
+                return startEventTime.replace(",", "\n")
+                        + " - " + eventFormat.getTransSameDayEndTimeEventFormat().format(calendarEnd.getTime());
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return endEventDate;
+        }
+    }
+
+    private String manufacturePriceRange(List<Ticket> tickets) {
         if (tickets.isEmpty()) return "외부 이벤트";
         else {
             ArrayList<Integer> prices = new ArrayList<>();
@@ -80,7 +113,7 @@ public class EventModelMapper implements Mapper<Event, EventModel> {
             if (maxPrice == 0 && minPrice == 0) return "무료";
             else if (minPrice == 0) return "무료 ~ " + '￦' + formatter.format(maxPrice);
             else if (maxPrice == minPrice) return '￦' + formatter.format(maxPrice);
-            return String.format(PRICE_FORMAT, formatter.format(minPrice), formatter.format(maxPrice));
+            return String.format(eventFormat.getPriceFormat(), formatter.format(minPrice), formatter.format(maxPrice));
         }
     }
 

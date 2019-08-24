@@ -2,8 +2,10 @@ package com.kkori.mini_festa.presentation.ui.event.detail;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -44,8 +46,8 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
     @BindView(R.id.ticket_bought_count_tv)
     TextView ticketBoughtCountTv;
 
-    @BindView(R.id.date_tv)
-    TextView dateTv;
+    @BindView(R.id.time_tv)
+    TextView timeTv;
 
     @BindView(R.id.profile_image)
     CircleImageView profileImage;
@@ -104,26 +106,36 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
 
         ticketBoughtCountTv.setText(eventModel.getTicketBoughtCount());
 
-        dateTv.setText(eventModel.getStartDate() + "\n - " + eventModel.getEndDate());
+        timeTv.setText(eventModel.getEventProgressTime());
 
         Glide.with(getContext()).load(eventModel.getProfileImage()).into(profileImage);
         hostTv.setText(eventModel.getHostName());
 
         String IMAGE_RESIZE = "<style>img{display: inline;height: auto;max-width: 100%;}</style>";
+        String BODY_RESIZE = "<body leftmargin=\"0\" topmargin=\"0\" rightmargin=\"0\" bottommargin=\"0\">";
+
+        WebSettings settings = contentWv.getSettings();
+
+        settings.setDefaultTextEncodingName("utf-8");
+        settings.setTextZoom(100);
+        settings.setDefaultFontSize(12);
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
         contentWv.setLongClickable(false);
         contentWv.setHapticFeedbackEnabled(false);
         contentWv.setOnLongClickListener(v -> true);
-        contentWv.getSettings().setTextZoom(100);
-        contentWv.getSettings().setDefaultFontSize(12);
+        coverIv. setOnTouchListener((v, event) -> (event.getAction() == MotionEvent.ACTION_MOVE));
         contentWv.setWebViewClient(new WebViewClient());
         contentWv.setWebChromeClient(new WebChromeClient());
         contentWv.setNetworkAvailable(true);
-        contentWv.getSettings().setJavaScriptEnabled(true);
-
-        contentWv.getSettings().setDomStorageEnabled(true);
-        contentWv.loadData(IMAGE_RESIZE + eventModel.getContents(),
-                "text/html", "UDF-8");
+        contentWv.setVerticalScrollBarEnabled(false);
+        contentWv.setHorizontalScrollBarEnabled(false);
+        contentWv.setFocusable(false);
+        contentWv.setFocusableInTouchMode(false);
+        contentWv.loadData(IMAGE_RESIZE + BODY_RESIZE + eventModel.getContents(),
+                "text/html; charset=utf-8", "utf-8");
 
         if (!eventModel.getTickets().isEmpty()) {
             ticketListAdapter.add(eventModel.getTickets());

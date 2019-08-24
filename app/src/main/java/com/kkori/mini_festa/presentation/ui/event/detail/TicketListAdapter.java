@@ -2,7 +2,6 @@ package com.kkori.mini_festa.presentation.ui.event.detail;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +62,8 @@ public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.Ti
 
         @BindView(R.id.price_tv)
         TextView priceTv;
+        @BindView(R.id.name_tv)
+        TextView nameTv;
         @BindView(R.id.description_tv)
         TextView descriptionTv;
         @BindView(R.id.quantity_tv)
@@ -80,25 +81,25 @@ public class TicketListAdapter extends RecyclerView.Adapter<TicketListAdapter.Ti
         }
 
         void bind(TicketModel ticketModel, Context context) {
-/*            priceTv.invalidate();
-            descriptionTv.invalidate();
-            quantityTv.invalidate();
-            limitPerUserTv.invalidate();
-            saleDateTv.invalidate();
-            countTv.invalidate();*/
-
             priceTv.setText(ticketModel.getPrice());
-            if (!ticketModel.getDescription().isEmpty())
-                descriptionTv.setText(ticketModel.getDescription());
             quantityTv.setText(ticketModel.getQuantity());
             limitPerUserTv.setText(ticketModel.getLimitPerUser());
             saleDateTv.setText(ticketModel.getSaleDate());
             countTv.setText(ticketModel.getCount());
 
-            Log.e("asdf", String.valueOf(ticketModel.isSale()));
+            if (!ticketModel.getName().isEmpty()) {
+                nameTv.setText(ticketModel.getName());
+            }
+
+            if (!ticketModel.getDescription().isEmpty()) {
+                descriptionTv.setText(ticketModel.getDescription());
+            } else {
+                descriptionTv.setVisibility(View.GONE);
+            }
 
             if (!ticketModel.isSale()) {
                 priceTv.setTextColor(Color.argb(255, 227, 227, 227));
+                nameTv.setTextColor(Color.argb(255, 227, 227, 227));
                 descriptionTv.setTextColor(Color.argb(255, 227, 227, 227));
                 quantityTv.setTextColor(Color.argb(255, 227, 227, 227));
                 limitPerUserTv.setTextColor(Color.argb(255, 227, 227, 227));
