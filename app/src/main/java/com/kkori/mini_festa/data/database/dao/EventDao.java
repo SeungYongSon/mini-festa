@@ -23,7 +23,7 @@ public interface EventDao {
     Single<List<EventRoomEntity>> getFavoriteEventList();
 
     @Query("SELECT * FROM eventroomentity where eventId = :id ")
-    Maybe<EventRoomEntity> selectById(int id);
+    Maybe<EventRoomEntity> selectEventById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable saveEvent(EventRoomEntity event);

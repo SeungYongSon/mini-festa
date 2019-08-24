@@ -68,7 +68,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@color/colorGray" />
+            android:background="@color/colorLightGray" />
 
         <TextView
             android:id="@+id/item_event_price"

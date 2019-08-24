@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.event.detail;
+package com.kkori.mini_festa.presentation.ui.event.detail;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -7,11 +7,13 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
@@ -26,9 +28,6 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EventDetailFragment extends BaseFragment implements EventDetailContract.View {
-
-    @Inject
-    EventDetailContract.Presenter presenter;
 
     @BindView(R.id.nestedScrollView)
     NestedScrollView nestedScrollView;
@@ -54,14 +53,23 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
     @BindView(R.id.host_tv)
     TextView hostTv;
 
-    @BindView(R.id.ticket_tv)
-    TextView ticketTv;
+    @BindView(R.id.ticket_list)
+    LinearLayout ticketList;
+
+    @BindView(R.id.ticket_recycler)
+    RecyclerView ticketRecycler;
 
     @BindView(R.id.content_wv)
     WebView contentWv;
 
     @BindView(R.id.like_btn)
     MaterialButton likeBtn;
+
+    @Inject
+    EventDetailContract.Presenter presenter;
+
+    @Inject
+    TicketListAdapter ticketListAdapter;
 
     @Override
     public int initLayoutResource() {
@@ -88,7 +96,7 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
         Glide.with(getContext()).load(eventModel.getCoverImage()).into(coverIv);
 
         nameTv.setText(eventModel.getName());
-        locationTv.setText("at " + eventModel.getLocationName());
+        locationTv.setText("at " + eventModel.getLocation().getName());
 
         if (eventModel.getTicketBoughtCount().equals("외부 이벤트")) {
             ticketBoughtCountTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -117,7 +125,12 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
         contentWv.loadData(IMAGE_RESIZE + eventModel.getContents(),
                 "text/html", "UDF-8");
 
-        ticketTv.setText(eventModel.getTicketPriceRange());
+        if (!eventModel.getTickets().isEmpty()) {
+            ticketListAdapter.add(eventModel.getTickets());
+            ticketRecycler.setAdapter(ticketListAdapter);
+        } else {
+            ticketList.setVisibility(View.GONE);
+        }
 
         if (eventModel.isFavorite()) {
             likeBtn.setText("좋아요 취소");

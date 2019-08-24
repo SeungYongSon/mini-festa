@@ -4,8 +4,8 @@ import com.kkori.mini_festa.domain.entity.event.EventService;
 import com.kkori.mini_festa.domain.usecase.GetEventThroughIdUseCase;
 import com.kkori.mini_festa.domain.usecase.SetFavoriteEventUseCase;
 import com.kkori.mini_festa.presentation.di.scope.EventFragmentScope;
-import com.kkori.mini_festa.presentation.event.detail.EventDetailContract;
-import com.kkori.mini_festa.presentation.event.detail.EventDetailPresenter;
+import com.kkori.mini_festa.presentation.ui.event.detail.EventDetailContract;
+import com.kkori.mini_festa.presentation.ui.event.detail.EventDetailPresenter;
 
 import dagger.Module;
 import dagger.Provides;

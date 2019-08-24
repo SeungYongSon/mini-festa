@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.event;
+package com.kkori.mini_festa.presentation.ui.event.board;
 
 import androidx.recyclerview.widget.DiffUtil;
 
@@ -10,7 +10,7 @@ public class EventDiffCallback extends DiffUtil.Callback {
     private final List<EventModel> oldEventModelList;
     private final List<EventModel> newEventModelList;
 
-    EventDiffCallback(List<EventModel> oldEventModelList, List<EventModel> newEventModelList) {
+    public EventDiffCallback(List<EventModel> oldEventModelList, List<EventModel> newEventModelList) {
         this.oldEventModelList = oldEventModelList;
         this.newEventModelList = newEventModelList;
     }

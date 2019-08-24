@@ -1,18 +1,18 @@
 package com.kkori.mini_festa.presentation.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.util.List;
 
-public class EventModel implements Parcelable {
+public class EventModel {
 
     private int eventId;
     private String name;
     private String eventSignature;
     private String startDate;
     private String endDate;
+    private List<TicketModel> tickets;
     private String ticketPriceRange;
     private String ticketBoughtCount;
-    private String locationName;
+    private LocationModel location;
     private String coverImage;
     private String contents;
     private String hostName;
@@ -24,9 +24,10 @@ public class EventModel implements Parcelable {
                       String eventSignature,
                       String startDate,
                       String endDate,
+                      List<TicketModel> tickets,
                       String ticketPriceRange,
                       String ticketBoughtCount,
-                      String locationName,
+                      LocationModel location,
                       String coverImage,
                       String contents,
                       String hostName,
@@ -37,9 +38,10 @@ public class EventModel implements Parcelable {
         this.eventSignature = eventSignature;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.tickets = tickets;
         this.ticketPriceRange = ticketPriceRange;
         this.ticketBoughtCount = ticketBoughtCount;
-        this.locationName = locationName;
+        this.location = location;
         this.coverImage = coverImage;
         this.contents = contents;
         this.hostName = hostName;
@@ -47,55 +49,7 @@ public class EventModel implements Parcelable {
         this.isFavorite = isFavorite;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    private EventModel(Parcel in) {
-        this.eventId = in.readInt();
-        this.name = in.readString();
-        this.eventSignature = in.readString();
-        this.startDate = in.readString();
-        this.endDate = in.readString();
-        this.ticketPriceRange = in.readString();
-        this.locationName = in.readString();
-        this.coverImage = in.readString();
-        this.contents = in.readString();
-        this.hostName = in.readString();
-        this.profileImage = in.readString();
-        this.isFavorite = in.readByte() != 0;
-    }
-
-    public static final Creator<EventModel> CREATOR = new Creator<EventModel>() {
-        @Override
-        public EventModel createFromParcel(Parcel in) {
-            return new EventModel(in);
-        }
-
-        @Override
-        public EventModel[] newArray(int size) {
-            return new EventModel[size];
-        }
-    };
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(eventId);
-        dest.writeString(name);
-        dest.writeString(eventSignature);
-        dest.writeString(startDate);
-        dest.writeString(endDate);
-        dest.writeString(ticketPriceRange);
-        dest.writeString(locationName);
-        dest.writeString(coverImage);
-        dest.writeString(contents);
-        dest.writeString(hostName);
-        dest.writeString(profileImage);
-        dest.writeByte((byte) (isFavorite ? 1 : 0));
-    }
-
-    public void setIsFavorite(boolean isFavorite){
+    public void setIsFavorite(boolean isFavorite) {
         this.isFavorite = isFavorite;
     }
 
@@ -115,13 +69,22 @@ public class EventModel implements Parcelable {
         return endDate;
     }
 
+    public List<TicketModel> getTickets() {
+        return tickets;
+    }
+
+    public LocationModel getLocation() {
+        return location;
+    }
+
     public String getTicketPriceRange() {
         return ticketPriceRange;
     }
 
-    public String getLocationName() {
-        return locationName;
+    public String getTicketBoughtCount() {
+        return ticketBoughtCount;
     }
+
 
     public String getCoverImage() {
         return coverImage;
@@ -141,10 +104,6 @@ public class EventModel implements Parcelable {
 
     public String getProfileImage() {
         return profileImage;
-    }
-
-    public String getTicketBoughtCount() {
-        return ticketBoughtCount;
     }
 
     public boolean isFavorite() {

@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.event.board;
+package com.kkori.mini_festa.presentation.ui.event.board;
 
 import android.util.Log;
 

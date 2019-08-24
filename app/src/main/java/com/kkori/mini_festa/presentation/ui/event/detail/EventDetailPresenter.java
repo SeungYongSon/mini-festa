@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.event.detail;
+package com.kkori.mini_festa.presentation.ui.event.detail;
 
 import com.kkori.mini_festa.domain.entity.Event;
 import com.kkori.mini_festa.domain.usecase.GetEventThroughIdUseCase;

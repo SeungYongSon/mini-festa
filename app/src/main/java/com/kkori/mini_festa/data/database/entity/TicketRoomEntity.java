@@ -1,8 +1,7 @@
-package com.kkori.mini_festa.domain.entity;
+package com.kkori.mini_festa.data.database.entity;
 
-public class Ticket {
-
-    private String name;
+public class TicketRoomEntity {
+    private String ticketName;
     private String description;
     private int price;
     private int count;
@@ -12,16 +11,16 @@ public class Ticket {
     private String saleEndDate;
     private String refundDueDate;
 
-    public Ticket(String name,
-                  String description,
-                  int price,
-                  int count,
-                  int quantity,
-                  int limitPerUser,
-                  String saleStartDate,
-                  String saleEndDate,
-                  String refundDueDate) {
-        this.name = name;
+    public TicketRoomEntity(String ticketName,
+                            String description,
+                            int price,
+                            int count,
+                            int quantity,
+                            int limitPerUser,
+                            String saleStartDate,
+                            String saleEndDate,
+                            String refundDueDate) {
+        this.ticketName = ticketName;
         this.description = description;
         this.price = price;
         this.count = count;
@@ -32,9 +31,8 @@ public class Ticket {
         this.refundDueDate = refundDueDate;
     }
 
-
-    public String getName() {
-        return name;
+    public String getTicketName() {
+        return ticketName;
     }
 
     public String getDescription() {
@@ -68,4 +66,5 @@ public class Ticket {
     public String getRefundDueDate() {
         return refundDueDate;
     }
+
 }

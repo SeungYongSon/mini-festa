@@ -42,7 +42,7 @@ public class EventLocalDataSourceImp implements EventLocalDataSource {
 
     @Override
     public Maybe<EventRoomEntity> selectFavoriteEvent(int id) {
-        return eventDao.selectById(id)
+        return eventDao.selectEventById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/price_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="무료"
+        android:textColor="@color/colorGray"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/description_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="일반 입장권"
+        android:textColor="@color/colorGray"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/quantity_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:drawableStart="@drawable/ic_quantity"
+        android:drawablePadding="8dp"
+        android:text="69개 남음"
+        android:textColor="@color/colorGray" />
+
+    <TextView
+        android:id="@+id/limit_per_user_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_limit_per_user"
+        android:drawablePadding="8dp"
+        android:text="1인당 23개 구입가능"
+        android:textColor="@color/colorGray" />
+
+    <TextView
+        android:id="@+id/sale_date_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_sale_date"
+        android:drawablePadding="8dp"
+        android:text="약 2개월 후에 판매마감"
+        android:textColor="@color/colorGray" />
+
+    <TextView
+        android:id="@+id/count_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:drawableStart="@drawable/ic_count"
+        android:drawablePadding="8dp"
+        android:text="10개 판매"
+        android:textColor="@color/colorGray" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layerType="software"
+        android:src="@drawable/drawable_dash_line" />
+
+</LinearLayout>

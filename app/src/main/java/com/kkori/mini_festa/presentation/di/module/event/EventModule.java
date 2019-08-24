@@ -8,16 +8,18 @@ import com.kkori.mini_festa.data.datasource.EventRemoteDataSource;
 import com.kkori.mini_festa.data.datasource.EventRemoteDataSourceImp;
 import com.kkori.mini_festa.data.mapper.EventMapper;
 import com.kkori.mini_festa.data.mapper.EventRoomMapper;
+import com.kkori.mini_festa.data.mapper.LocationMapper;
+import com.kkori.mini_festa.data.mapper.LocationRoomMapper;
+import com.kkori.mini_festa.data.mapper.TicketsMapper;
+import com.kkori.mini_festa.data.mapper.TicketsRoomMapper;
 import com.kkori.mini_festa.data.repository.EventRepositoryImp;
 import com.kkori.mini_festa.domain.entity.event.EventRepository;
 import com.kkori.mini_festa.domain.entity.event.EventService;
 import com.kkori.mini_festa.domain.entity.event.EventServiceImp;
-import com.kkori.mini_festa.domain.usecase.GetLocalEventListUseCase;
-import com.kkori.mini_festa.domain.usecase.GetRemoteEventListUseCase;
 import com.kkori.mini_festa.presentation.di.scope.EventFragmentScope;
-import com.kkori.mini_festa.presentation.event.board.EventBoardContract;
-import com.kkori.mini_festa.presentation.event.board.EventBoardPresenter;
 import com.kkori.mini_festa.presentation.mapper.EventModelMapper;
+import com.kkori.mini_festa.presentation.mapper.LocationModelMapper;
+import com.kkori.mini_festa.presentation.mapper.TicketModelsMapper;
 
 import dagger.Module;
 import dagger.Provides;
@@ -55,19 +57,19 @@ public class EventModule {
     @Provides
     @EventFragmentScope
     EventMapper provideEventMapper() {
-        return new EventMapper();
+        return new EventMapper(new TicketsMapper(), new LocationMapper());
     }
 
     @Provides
     @EventFragmentScope
     EventModelMapper provideEventModelMapper() {
-        return new EventModelMapper();
+        return new EventModelMapper(new TicketModelsMapper(), new LocationModelMapper());
     }
 
     @Provides
     @EventFragmentScope
     EventRoomMapper provideEventRoomMapper() {
-        return new EventRoomMapper();
+        return new EventRoomMapper(new TicketsRoomMapper(), new LocationRoomMapper());
     }
 
 }

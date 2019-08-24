@@ -1,7 +1,10 @@
 package com.kkori.mini_festa.data.database.entity;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import java.util.List;
 
 @Entity
 public class EventRoomEntity {
@@ -12,9 +15,9 @@ public class EventRoomEntity {
     private String eventSignature;
     private String startDate;
     private String endDate;
-    private String ticketPriceRange;
-    private String ticketBoughtCount;
-    private String locationName;
+    private List<TicketRoomEntity> tickets;
+    @Embedded
+    private LocationRoomEntity location;
     private String coverImage;
     private String contents;
     private String hostName;
@@ -26,9 +29,8 @@ public class EventRoomEntity {
                            String eventSignature,
                            String startDate,
                            String endDate,
-                           String ticketPriceRange,
-                           String ticketBoughtCount,
-                           String locationName,
+                           List<TicketRoomEntity> tickets,
+                           LocationRoomEntity location,
                            String coverImage,
                            String contents,
                            String hostName,
@@ -39,9 +41,8 @@ public class EventRoomEntity {
         this.eventSignature = eventSignature;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.ticketPriceRange = ticketPriceRange;
-        this.ticketBoughtCount = ticketBoughtCount;
-        this.locationName = locationName;
+        this.tickets = tickets;
+        this.location = location;
         this.coverImage = coverImage;
         this.contents = contents;
         this.hostName = hostName;
@@ -69,12 +70,12 @@ public class EventRoomEntity {
         return endDate;
     }
 
-    public String getTicketPriceRange() {
-        return ticketPriceRange;
+    public List<TicketRoomEntity> getTickets() {
+        return tickets;
     }
 
-    public String getLocationName() {
-        return locationName;
+    public LocationRoomEntity getLocation() {
+        return location;
     }
 
     public String getCoverImage() {
@@ -91,10 +92,6 @@ public class EventRoomEntity {
 
     public String getProfileImage() {
         return profileImage;
-    }
-
-    public String getTicketBoughtCount() {
-        return ticketBoughtCount;
     }
 
     public boolean isFavorite() {
