@@ -1,13 +1,13 @@
 package com.kkori.mini_festa.presentation.ui.event.detail;
 
 import android.annotation.SuppressLint;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,10 +18,20 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.kkori.mini_festa.R;
 import com.kkori.mini_festa.presentation.base.BaseFragment;
 import com.kkori.mini_festa.presentation.model.EventModel;
+import com.kkori.mini_festa.presentation.model.LocationModel;
+
+import java.io.IOException;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,7 +39,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EventDetailFragment extends BaseFragment implements EventDetailContract.View {
+public class EventDetailFragment extends BaseFragment implements EventDetailContract.View, OnMapReadyCallback {
 
     @BindView(R.id.nestedScrollView)
     NestedScrollView nestedScrollView;
@@ -55,14 +65,23 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
     @BindView(R.id.host_tv)
     TextView hostTv;
 
+    @BindView(R.id.content_wv)
+    WebView contentWv;
+
+    @BindView(R.id.location_name_tv)
+    TextView locationNameTv;
+
+    @BindView(R.id.location_address_tv)
+    TextView locationAddressTv;
+
+    @BindView(R.id.location_description_tv)
+    TextView locationDescriptionTv;
+
     @BindView(R.id.ticket_list)
     LinearLayout ticketList;
 
     @BindView(R.id.ticket_recycler)
     RecyclerView ticketRecycler;
-
-    @BindView(R.id.content_wv)
-    WebView contentWv;
 
     @BindView(R.id.like_btn)
     MaterialButton likeBtn;
@@ -72,6 +91,9 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
 
     @Inject
     TicketListAdapter ticketListAdapter;
+
+    private SupportMapFragment locationMap;
+    private LocationModel location;
 
     @Override
     public int initLayoutResource() {
@@ -84,6 +106,27 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
 
         int id = getArguments().getInt("eventId");
 
+        locationMap = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.location_map);
+
+        WebSettings settings = contentWv.getSettings();
+
+        settings.setDefaultTextEncodingName("utf-8");
+        settings.setTextZoom(100);
+        settings.setDefaultFontSize(12);
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
+        contentWv.setLongClickable(false);
+        contentWv.setHapticFeedbackEnabled(false);
+        contentWv.setOnLongClickListener(v -> true);
+        coverIv.setOnTouchListener((v, event) -> (event.getAction() == MotionEvent.ACTION_MOVE));
+        contentWv.setNetworkAvailable(true);
+        contentWv.setVerticalScrollBarEnabled(false);
+        contentWv.setHorizontalScrollBarEnabled(false);
+        contentWv.setFocusable(false);
+        contentWv.setFocusableInTouchMode(false);
+
         presenter.initEvent(id);
     }
 
@@ -95,10 +138,14 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
     @SuppressLint({"SetTextI18n", "SetJavaScriptEnabled"})
     @Override
     public void initUI(EventModel eventModel) {
+        nestedScrollView.scrollTo(0, 0);
+
+        location = eventModel.getLocation();
+
         Glide.with(getContext()).load(eventModel.getCoverImage()).into(coverIv);
 
         nameTv.setText(eventModel.getName());
-        locationTv.setText("at " + eventModel.getLocation().getName());
+        locationTv.setText("at " + location.getName());
 
         if (eventModel.getTicketBoughtCount().equals("외부 이벤트")) {
             ticketBoughtCountTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -114,28 +161,16 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
         String IMAGE_RESIZE = "<style>img{display: inline;height: auto;max-width: 100%;}</style>";
         String BODY_RESIZE = "<body leftmargin=\"0\" topmargin=\"0\" rightmargin=\"0\" bottommargin=\"0\">";
 
-        WebSettings settings = contentWv.getSettings();
-
-        settings.setDefaultTextEncodingName("utf-8");
-        settings.setTextZoom(100);
-        settings.setDefaultFontSize(12);
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-
-        contentWv.setLongClickable(false);
-        contentWv.setHapticFeedbackEnabled(false);
-        contentWv.setOnLongClickListener(v -> true);
-        coverIv. setOnTouchListener((v, event) -> (event.getAction() == MotionEvent.ACTION_MOVE));
-        contentWv.setWebViewClient(new WebViewClient());
-        contentWv.setWebChromeClient(new WebChromeClient());
-        contentWv.setNetworkAvailable(true);
-        contentWv.setVerticalScrollBarEnabled(false);
-        contentWv.setHorizontalScrollBarEnabled(false);
-        contentWv.setFocusable(false);
-        contentWv.setFocusableInTouchMode(false);
         contentWv.loadData(IMAGE_RESIZE + BODY_RESIZE + eventModel.getContents(),
                 "text/html; charset=utf-8", "utf-8");
+
+        locationMap.getMapAsync(this);
+        locationNameTv.setText(location.getName());
+        locationAddressTv.setText(location.getAddress());
+        if (!location.getDescription().isEmpty())
+            locationDescriptionTv.setText(location.getDescription());
+        else
+            locationDescriptionTv.setVisibility(View.GONE);
 
         if (!eventModel.getTickets().isEmpty()) {
             ticketListAdapter.add(eventModel.getTickets());
@@ -159,6 +194,44 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
         } else {
             likeBtn.setText("좋아요");
             showToast("좋아요 리스트에서 사라졌습니다!");
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        Geocoder geocoder = new Geocoder(getContext());
+        List<Address> addresses;
+        LatLng addressPosition;
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        googleMap.getUiSettings().setAllGesturesEnabled(false);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+        try {
+            addresses = geocoder.getFromLocationName(location.getAddress(), 5);
+            Address address = addresses.get(0);
+            addressPosition = new LatLng(address.getLatitude(), address.getLongitude());
+
+            markerOptions.position(addressPosition);
+            markerOptions.title(location.getName());
+            markerOptions.snippet(location.getAddress());
+
+            googleMap.addMarker(markerOptions);
+
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(addressPosition));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+        } catch (IOException e) {
+            showToast("네트워크가 원활하지 않습니다.");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (locationMap != null) {
+            locationMap.onCreate(savedInstanceState);
         }
     }
 

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:map="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
@@ -23,8 +24,8 @@
                 <ImageView
                     android:id="@+id/cover_image"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitCenter" />
+                    android:layout_height="200dp"
+                    android:scaleType="center" />
 
                 <TextView
                     android:id="@+id/name_tv"
@@ -167,10 +168,68 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/location_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <fragment
+                    android:id="@+id/location_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorGray"
+                    android:text="장소" />
+
+                <TextView
+                    android:id="@+id/location_name_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorGray"
+                    android:text="장소" />
+
+                <TextView
+                    android:id="@+id/location_address_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorGray"
+                    android:text="주소" />
+
+                <TextView
+                    android:id="@+id/location_description_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorGray"
+                    android:text="설명" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/ticket_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginTop="32dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp">
 
