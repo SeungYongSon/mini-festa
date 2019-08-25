@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
-    tools:context=".presentation.event.board.EventBoardFragment">
+    tools:context=".presentation.ui.event.board.EventBoardFragment">
 
     <ProgressBar
         android:id="@+id/first_loading_progress"

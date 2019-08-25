@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation;
+package com.kkori.mini_festa.presentation.ui.event;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,8 +7,8 @@ import android.widget.ImageView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.kkori.mini_festa.R;
 import com.kkori.mini_festa.presentation.base.BaseActivity;
-import com.kkori.mini_festa.presentation.event.board.EventBoardFragment;
-import com.kkori.mini_festa.presentation.event.detail.EventDetailFragment;
+import com.kkori.mini_festa.presentation.ui.event.board.EventBoardFragment;
+import com.kkori.mini_festa.presentation.ui.event.detail.EventDetailFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;

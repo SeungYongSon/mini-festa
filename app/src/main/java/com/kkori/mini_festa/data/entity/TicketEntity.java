@@ -4,22 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class TicketEntity {
 
-    @SerializedName("registable")
-    private Boolean registable;
-    @SerializedName("ticketId")
-    private int ticketId;
-    @SerializedName("eventId")
-    private int eventId;
     @SerializedName("name")
     private String name;
     @SerializedName("description")
     private String description;
-    @SerializedName("type")
-    private String type;
     @SerializedName("price")
     private int price;
-    @SerializedName("currency")
-    private String currency;
     @SerializedName("count")
     private int count;
     @SerializedName("quantity")
@@ -32,12 +22,14 @@ public class TicketEntity {
     private String saleEndDate;
     @SerializedName("refundDueDate")
     private String refundDueDate;
-    @SerializedName("hideRemains")
-    private boolean hideRemains;
-    @SerializedName("useSurvey")
-    private boolean useSurvey;
-    @SerializedName("surveyNotice")
-    private String surveyNotice;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     public int getPrice() {
         return price;
@@ -45,5 +37,25 @@ public class TicketEntity {
 
     public int getCount() {
         return count;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public int getLimitPerUser() {
+        return limitPerUser;
+    }
+
+    public String getSaleStartDate() {
+        return saleStartDate;
+    }
+
+    public String getSaleEndDate() {
+        return saleEndDate;
+    }
+
+    public String getRefundDueDate() {
+        return refundDueDate;
     }
 }

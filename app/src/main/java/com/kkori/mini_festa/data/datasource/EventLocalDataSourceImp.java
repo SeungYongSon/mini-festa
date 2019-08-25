@@ -34,6 +34,13 @@ public class EventLocalDataSourceImp implements EventLocalDataSource {
     }
 
     @Override
+    public Completable updateLocalEvent(EventRoomEntity event) {
+        return eventDao.updateEvent(event)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Single<List<EventRoomEntity>> getFavoriteEventList() {
         return eventDao.getFavoriteEventList()
                 .subscribeOn(Schedulers.io())
@@ -42,7 +49,7 @@ public class EventLocalDataSourceImp implements EventLocalDataSource {
 
     @Override
     public Maybe<EventRoomEntity> selectFavoriteEvent(int id) {
-        return eventDao.selectById(id)
+        return eventDao.selectEventById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

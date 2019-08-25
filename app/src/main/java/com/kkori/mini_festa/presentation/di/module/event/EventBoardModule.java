@@ -5,8 +5,8 @@ import com.kkori.mini_festa.domain.usecase.GetFavoriteEventListUseCase;
 import com.kkori.mini_festa.domain.usecase.GetLocalEventListUseCase;
 import com.kkori.mini_festa.domain.usecase.GetRemoteEventListUseCase;
 import com.kkori.mini_festa.presentation.di.scope.EventFragmentScope;
-import com.kkori.mini_festa.presentation.event.board.EventBoardContract;
-import com.kkori.mini_festa.presentation.event.board.EventBoardPresenter;
+import com.kkori.mini_festa.presentation.ui.event.board.EventBoardContract;
+import com.kkori.mini_festa.presentation.ui.event.board.EventBoardPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -28,7 +28,7 @@ public class EventBoardModule {
 
     @Provides
     @EventFragmentScope
-    GetFavoriteEventListUseCase provideGetFavoriteEventListUsecase(EventService eventService) {
+    GetFavoriteEventListUseCase provideGetFavoriteEventListUseCase(EventService eventService) {
         return new GetFavoriteEventListUseCase(eventService);
     }
 

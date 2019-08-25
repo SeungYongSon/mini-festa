@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.event;
+package com.kkori.mini_festa.presentation.ui.event.board;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.kkori.mini_festa.R;
-import com.kkori.mini_festa.presentation.event.board.EventBoardContract;
 import com.kkori.mini_festa.presentation.model.EventModel;
 
 import java.util.ArrayList;

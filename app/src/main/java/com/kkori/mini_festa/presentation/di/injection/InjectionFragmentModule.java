@@ -4,8 +4,8 @@ import com.kkori.mini_festa.presentation.di.module.event.EventBoardModule;
 import com.kkori.mini_festa.presentation.di.module.event.EventDetailModule;
 import com.kkori.mini_festa.presentation.di.module.event.EventModule;
 import com.kkori.mini_festa.presentation.di.scope.EventFragmentScope;
-import com.kkori.mini_festa.presentation.event.board.EventBoardFragment;
-import com.kkori.mini_festa.presentation.event.detail.EventDetailFragment;
+import com.kkori.mini_festa.presentation.ui.event.board.EventBoardFragment;
+import com.kkori.mini_festa.presentation.ui.event.detail.EventDetailFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

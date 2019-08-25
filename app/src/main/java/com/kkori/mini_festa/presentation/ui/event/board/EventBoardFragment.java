@@ -1,4 +1,4 @@
-package com.kkori.mini_festa.presentation.event.board;
+package com.kkori.mini_festa.presentation.ui.event.board;
 
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -14,9 +14,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kkori.mini_festa.R;
-import com.kkori.mini_festa.presentation.MainActivity;
+import com.kkori.mini_festa.presentation.ui.event.MainActivity;
 import com.kkori.mini_festa.presentation.base.BaseFragment;
-import com.kkori.mini_festa.presentation.event.EventListAdapter;
 import com.kkori.mini_festa.presentation.model.EventModel;
 
 import java.util.List;
@@ -30,7 +29,8 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 public class EventBoardFragment extends BaseFragment implements EventBoardContract.View, NestedScrollView.OnScrollChangeListener {
 
     @Inject
-    public EventBoardContract.Presenter presenter;
+    public
+    EventBoardContract.Presenter presenter;
 
     @Inject
     EventListAdapter eventListAdapter;

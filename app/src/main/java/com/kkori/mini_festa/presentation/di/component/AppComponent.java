@@ -2,8 +2,8 @@ package com.kkori.mini_festa.presentation.di.component;
 
 import com.kkori.mini_festa.FestaApplication;
 import com.kkori.mini_festa.presentation.di.injection.InjectionActivityModule;
-import com.kkori.mini_festa.presentation.di.module.AppModule;
 import com.kkori.mini_festa.presentation.di.injection.InjectionFragmentModule;
+import com.kkori.mini_festa.presentation.di.module.AppModule;
 
 import javax.inject.Singleton;
 

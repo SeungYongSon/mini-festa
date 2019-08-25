@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.kkori.mini_festa.data.database.entity.EventRoomEntity;
 
@@ -23,9 +24,12 @@ public interface EventDao {
     Single<List<EventRoomEntity>> getFavoriteEventList();
 
     @Query("SELECT * FROM eventroomentity where eventId = :id ")
-    Maybe<EventRoomEntity> selectById(int id);
+    Maybe<EventRoomEntity> selectEventById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable saveEvent(EventRoomEntity event);
+
+    @Update
+    Completable updateEvent(EventRoomEntity event);
 
 }
