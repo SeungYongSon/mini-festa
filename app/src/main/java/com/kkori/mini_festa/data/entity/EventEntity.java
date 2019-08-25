@@ -14,6 +14,8 @@ public class EventEntity {
     private String eventSignature;
     @SerializedName("startDate")
     private String startDate;
+    @SerializedName("endDate")
+    private String endDate;
     @SerializedName("tickets")
     private List<TicketEntity> tickets;
     @SerializedName("location")
@@ -37,6 +39,10 @@ public class EventEntity {
 
     public String getStartDate() {
         return startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
     }
 
     public List<TicketEntity> getTickets() {

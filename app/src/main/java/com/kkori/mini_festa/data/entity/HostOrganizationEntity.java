@@ -6,9 +6,14 @@ public class HostOrganizationEntity {
 
     @SerializedName("name")
     private String name;
+    @SerializedName("profileImage")
+    private String profileImage;
 
     public String getName() {
         return name;
     }
 
+    public String getProfileImage() {
+        return profileImage;
+    }
 }

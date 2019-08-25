@@ -10,6 +10,8 @@ public interface BaseContract {
 
     interface View {
         void setPresenter(Presenter<?> presenter);
+
+        void showToast(String text);
     }
 
 }

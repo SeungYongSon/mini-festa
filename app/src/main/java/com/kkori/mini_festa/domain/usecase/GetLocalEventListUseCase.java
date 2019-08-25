@@ -1,23 +1,23 @@
 package com.kkori.mini_festa.domain.usecase;
 
 import com.kkori.mini_festa.domain.base.UseCase;
-import com.kkori.mini_festa.domain.entity.Service;
+import com.kkori.mini_festa.domain.entity.event.EventService;
 
-import io.reactivex.Flowable;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.subscribers.DisposableSubscriber;
+import io.reactivex.Single;
+import io.reactivex.observers.DisposableSingleObserver;
 
-public class GetLocalEventListUseCase extends UseCase<Void, DisposableSubscriber> {
+public class GetLocalEventListUseCase extends UseCase<Void, DisposableSingleObserver> {
 
-    public GetLocalEventListUseCase(CompositeDisposable disposable, Service service) {
-        super(disposable, service);
+    private EventService service;
+
+    public GetLocalEventListUseCase(EventService service) {
+        this.service = service;
     }
 
     @Override
-    protected DisposableSubscriber createSubscriber(Void data, DisposableSubscriber disposableObserver) {
-        Flowable flowable = service.getLocalEventList();
+    protected DisposableSingleObserver createSubscriber(Void data, DisposableSingleObserver disposableObserver) {
+        Single single = service.getLocalEventList();
 
-        return (DisposableSubscriber) flowable.subscribeWith(disposableObserver);
+        return (DisposableSingleObserver) single.subscribeWith(disposableObserver);
     }
-
 }
