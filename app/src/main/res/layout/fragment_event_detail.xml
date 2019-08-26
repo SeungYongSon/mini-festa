@@ -35,7 +35,7 @@
                     android:layout_marginTop="26dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="이름"
+                    android:text="이벤트명"
                     android:textColor="#000000"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -123,7 +123,7 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_marginStart="8dp"
-                        android:src="@drawable/logo"
+                        android:src="@android:color/white"
                         app:civ_border_color="@color/colorGray"
                         app:civ_border_width="0.25dp" />
 
