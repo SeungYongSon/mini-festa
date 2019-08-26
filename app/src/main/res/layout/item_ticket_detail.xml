@@ -45,7 +45,7 @@
             android:layout_marginTop="32dp"
             android:drawableStart="@drawable/ic_quantity"
             android:drawablePadding="8dp"
-            android:text="69개 남음"
+            android:text="0개 남음"
             android:textColor="@color/colorGray" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:layout_marginTop="8dp"
             android:drawableStart="@drawable/ic_limit_per_user"
             android:drawablePadding="8dp"
-            android:text="1인당 23개 구입가능"
+            android:text="1인당 0개 구입가능"
             android:textColor="@color/colorGray" />
 
         <TextView
@@ -65,7 +65,7 @@
             android:layout_marginTop="8dp"
             android:drawableStart="@drawable/ic_sale_date"
             android:drawablePadding="8dp"
-            android:text="약 2개월 후에 판매마감"
+            android:text="약 0개월 후에 판매마감"
             android:textColor="@color/colorGray" />
 
         <TextView
@@ -76,7 +76,7 @@
             android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/ic_count"
             android:drawablePadding="8dp"
-            android:text="10개 판매"
+            android:text="0개 판매"
             android:textColor="@color/colorGray" />
     </LinearLayout>
 

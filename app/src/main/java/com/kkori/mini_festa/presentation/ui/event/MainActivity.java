@@ -10,8 +10,13 @@ import com.kkori.mini_festa.presentation.base.BaseActivity;
 import com.kkori.mini_festa.presentation.ui.event.board.EventBoardFragment;
 import com.kkori.mini_festa.presentation.ui.event.detail.EventDetailFragment;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends BaseActivity {
 
@@ -26,6 +31,8 @@ public class MainActivity extends BaseActivity {
 
     private EventBoardFragment eventBoardFragment = new EventBoardFragment();
     private EventDetailFragment eventDetailFragment = new EventDetailFragment();
+
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public int initLayoutResource() {
@@ -86,12 +93,16 @@ public class MainActivity extends BaseActivity {
         backImage.setVisibility(View.VISIBLE);
         likeImage.setVisibility(View.INVISIBLE);
 
-        appBarLayout.setExpanded(true);
+        disposable.add(Single.timer(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> appBarLayout.setExpanded(true)));
     }
 
     @Override
     public void onBackPressed() {
-        appBarLayout.setExpanded(true);
+        disposable.add(Single.timer(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> appBarLayout.setExpanded(true)));
 
         if (getSupportFragmentManager().beginTransaction().isAddToBackStackAllowed()) {
             backImage.setVisibility(View.INVISIBLE);
@@ -99,5 +110,11 @@ public class MainActivity extends BaseActivity {
         }
 
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 }
