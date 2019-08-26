@@ -30,14 +30,18 @@ import com.kkori.mini_festa.presentation.base.BaseFragment;
 import com.kkori.mini_festa.presentation.model.EventModel;
 import com.kkori.mini_festa.presentation.model.LocationModel;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class EventDetailFragment extends BaseFragment implements EventDetailContract.View, OnMapReadyCallback {
 
@@ -95,6 +99,8 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
     private SupportMapFragment locationMap;
     private LocationModel location;
 
+    private CompositeDisposable disposable;
+
     @Override
     public int initLayoutResource() {
         return R.layout.fragment_event_detail;
@@ -103,6 +109,8 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        disposable = new CompositeDisposable();
 
         int id = getArguments().getInt("eventId");
 
@@ -142,48 +150,60 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
 
         location = eventModel.getLocation();
 
-        Glide.with(getContext()).load(eventModel.getCoverImage()).into(coverIv);
-
-        nameTv.setText(eventModel.getName());
-        locationTv.setText("at " + location.getName());
-
-        if (eventModel.getTicketBoughtCount().equals("외부 이벤트")) {
-            ticketBoughtCountTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }
-
-        ticketBoughtCountTv.setText(eventModel.getTicketBoughtCount());
-
-        timeTv.setText(eventModel.getEventProgressTime());
-
-        Glide.with(getContext()).load(eventModel.getProfileImage()).into(profileImage);
-        hostTv.setText(eventModel.getHostName());
-
         String IMAGE_RESIZE = "<style>img{display: inline;height: auto;max-width: 100%;}</style>";
         String BODY_RESIZE = "<body leftmargin=\"0\" topmargin=\"0\" rightmargin=\"0\" bottommargin=\"0\">";
 
-        contentWv.loadData(IMAGE_RESIZE + BODY_RESIZE + eventModel.getContents(),
-                "text/html; charset=utf-8", "utf-8");
+        disposable.add(Observable.timer(100, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    nameTv.setText(eventModel.getName());
+                    locationTv.setText("at " + location.getName());
 
-        locationMap.getMapAsync(this);
-        locationNameTv.setText(location.getName());
-        locationAddressTv.setText(location.getAddress());
-        if (!location.getDescription().isEmpty())
-            locationDescriptionTv.setText(location.getDescription());
-        else
-            locationDescriptionTv.setVisibility(View.GONE);
+                    if (eventModel.getTicketBoughtCount().equals("외부 이벤트")) {
+                        ticketBoughtCountTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    }
 
-        if (!eventModel.getTickets().isEmpty()) {
-            ticketListAdapter.add(eventModel.getTickets());
-            ticketRecycler.setAdapter(ticketListAdapter);
-        } else {
-            ticketList.setVisibility(View.GONE);
-        }
+                    ticketBoughtCountTv.setText(eventModel.getTicketBoughtCount());
 
-        if (eventModel.isFavorite()) {
-            likeBtn.setText("좋아요 취소");
-        } else {
-            likeBtn.setText("좋아요");
-        }
+                    timeTv.setText(eventModel.getEventProgressTime());
+
+                    hostTv.setText(eventModel.getHostName());
+
+                    locationNameTv.setText(location.getName());
+                    locationAddressTv.setText(location.getAddress());
+                    if (!location.getDescription().isEmpty())
+                        locationDescriptionTv.setText(location.getDescription());
+                    else
+                        locationDescriptionTv.setVisibility(View.GONE);
+
+                    if (!eventModel.getTickets().isEmpty()) {
+                        ticketListAdapter.add(eventModel.getTickets());
+                        ticketRecycler.setAdapter(ticketListAdapter);
+                    } else {
+                        ticketList.setVisibility(View.GONE);
+                    }
+
+                    if (eventModel.isFavorite()) {
+                        likeBtn.setText("좋아요 취소");
+                    } else {
+                        likeBtn.setText("좋아요");
+                    }
+
+                    contentWv.loadData(IMAGE_RESIZE + BODY_RESIZE + eventModel.getContents(),
+                            "text/html; charset=utf-8", "utf-8");
+
+                    locationMap.getMapAsync(this);
+                }));
+
+        disposable.add(Observable.timer(100, TimeUnit.MILLISECONDS)
+                .flatMap(ignore -> Observable.just(Glide.with(getContext()).load(eventModel.getCoverImage())))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(drawableRequestBuilder -> drawableRequestBuilder.into(coverIv)));
+
+        disposable.add(Observable.timer(110, TimeUnit.MILLISECONDS)
+                .flatMap(ignore -> Observable.just(Glide.with(getContext()).load(eventModel.getProfileImage())))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(drawableRequestBuilder -> drawableRequestBuilder.into(profileImage)));
     }
 
     @Override
@@ -200,30 +220,36 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Geocoder geocoder = new Geocoder(getContext());
-        List<Address> addresses;
-        LatLng addressPosition;
         MarkerOptions markerOptions = new MarkerOptions();
 
         googleMap.getUiSettings().setAllGesturesEnabled(false);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
 
-        try {
-            addresses = geocoder.getFromLocationName(location.getAddress(), 5);
-            Address address = addresses.get(0);
-            addressPosition = new LatLng(address.getLatitude(), address.getLongitude());
+        disposable.add(Single.timer(140, TimeUnit.MILLISECONDS)
+                .flatMap(aLong -> Single.just(geocoder))
+                .map(geo -> geo.getFromLocationName(location.getAddress(), 5))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(addresses -> {
+                    if (!addresses.isEmpty()) {
+                        Address address = addresses.get(0);
 
-            markerOptions.position(addressPosition);
-            markerOptions.title(location.getName());
-            markerOptions.snippet(location.getAddress());
+                        LatLng addressPosition = new LatLng(address.getLatitude(), address.getLongitude());
 
-            googleMap.addMarker(markerOptions);
+                        markerOptions.position(addressPosition);
+                        markerOptions.title(location.getName());
+                        markerOptions.snippet(location.getAddress());
 
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(addressPosition));
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-        } catch (IOException e) {
-            showToast("네트워크가 원활하지 않습니다.");
-            e.printStackTrace();
-        }
+                        googleMap.addMarker(markerOptions);
+
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(addressPosition));
+                        googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+                    } else {
+                        showToast("주소를 찾지 못했습니다!");
+                    }
+                }, throwable -> {
+                    showToast("네트워크가 원활하지 않습니다.");
+                }));
     }
 
     @Override
@@ -235,4 +261,9 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.dispose();
+    }
 }
