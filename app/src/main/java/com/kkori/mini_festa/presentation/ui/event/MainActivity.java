@@ -93,18 +93,18 @@ public class MainActivity extends BaseActivity {
         backImage.setVisibility(View.VISIBLE);
         likeImage.setVisibility(View.INVISIBLE);
 
-        disposable.add(Single.timer(400, TimeUnit.MILLISECONDS)
+        disposable.add(Single.timer(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> appBarLayout.setExpanded(true)));
     }
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().beginTransaction().isAddToBackStackAllowed()) {
-            disposable.add(Single.timer(400, TimeUnit.MILLISECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(aLong -> appBarLayout.setExpanded(true)));
+        disposable.add(Single.timer(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> appBarLayout.setExpanded(true)));
 
+        if (getSupportFragmentManager().beginTransaction().isAddToBackStackAllowed()) {
             backImage.setVisibility(View.INVISIBLE);
             likeImage.setVisibility(View.VISIBLE);
         }

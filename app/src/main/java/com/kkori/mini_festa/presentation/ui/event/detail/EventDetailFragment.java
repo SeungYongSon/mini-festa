@@ -247,7 +247,9 @@ public class EventDetailFragment extends BaseFragment implements EventDetailCont
                     } else {
                         showToast("주소를 찾지 못했습니다!");
                     }
-                }, throwable -> showToast("네트워크가 원활하지 않습니다.")));
+                }, throwable -> {
+                    showToast("네트워크가 원활하지 않습니다.");
+                }));
     }
 
     @Override
