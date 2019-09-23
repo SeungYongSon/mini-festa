@@ -1,5 +1,7 @@
 # Mini Festa
 
+[![CircleCI](https://circleci.com/gh/SeungYongSon/mini-festa/tree/master.svg?style=svg)](https://circleci.com/gh/SeungYongSon/mini-festa/tree/master)
+
 ## ⚠ Warning
 
 본 프로젝트가 접근하는 저작권은 실제 서비스를 담당하는 [**Festa**](https://festa.io) 에 있으며,  
