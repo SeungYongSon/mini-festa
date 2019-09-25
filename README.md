@@ -1,5 +1,6 @@
 # Mini Festa
 
+[![Platform](http://img.shields.io/badge/platform-android-green.svg?style=flat)](https://developer.android.com)
 [![CircleCI](https://circleci.com/gh/SeungYongSon/mini-festa/tree/master.svg?style=svg)](https://circleci.com/gh/SeungYongSon/mini-festa/tree/master)
 
 ## ⚠ Warning
